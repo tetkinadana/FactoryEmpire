@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factory Empire</title>
+</head>
+
+<body style="background:#20242a;color:white;text-align:center;font-family:Arial;padding:30px">
+
+    <h1>🏭 FACTORY EMPIRE</h1>
+
+    <h2>💰 Деньги: <span id="money">0</span></h2>
+    <h2>⛏️ Руда: <span id="ore">0</span></h2>
+
+    <div style="font-size:100px;margin:30px">⛏️</div>
+
+    <button onclick="mine()" style="font-size:22px;padding:20px;border-radius:15px">
+        ⛏️ ДОБЫТЬ РУДУ
+    </button>
+
+    <script>
+        let ore = 0;
+
+        function mine() {
+            ore++;
+            document.getElementById("ore").textContent = ore;
+        }
+    </script>
+
+</body>
+</html>
