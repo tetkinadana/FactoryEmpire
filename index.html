@@ -1,468 +1,430 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Factory Empire</title>
 
-    <style>
-        body {
-            margin: 0;
-            background: #20242a;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-
-        .game {
-            max-width: 900px;
-            margin: auto;
-            padding: 25px;
-        }
-
-        h1 {
-            font-size: 38px;
-        }
-
-        .stats {
-            background: #292e36;
-            border: 2px solid #454c57;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stats div {
-            margin: 8px;
-            font-size: 20px;
-        }
-
-        .resources {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .resource {
-            background: #292e36;
-            border: 2px solid #454c57;
-            border-radius: 12px;
-            padding: 15px;
-            font-size: 18px;
-        }
-
-        .buildings {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .building {
-            background: #292e36;
-            border: 2px solid #454c57;
-            border-radius: 15px;
-            padding: 20px;
-        }
-
-        .building-icon {
-            font-size: 60px;
-        }
-
-        button {
-            background: #3b424d;
-            color: white;
-            border: 2px solid #59616d;
-            border-radius: 10px;
-            padding: 12px 18px;
-            font-size: 17px;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        button:hover {
-            background: #4a535f;
-        }
-
-        .level-up {
-            display: none;
-            background: #343b45;
-            border: 2px solid #777f8b;
-            border-radius: 12px;
-            padding: 12px;
-            margin: 15px 0;
-            font-size: 20px;
-        }
-
-        @media (max-width: 650px) {
-
-            .resources,
-            .buildings {
-                grid-template-columns: 1fr;
-            }
-
-            h1 {
-                font-size: 30px;
-            }
-        }
-    </style>
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="game">
 
-    <h1>🏭 FACTORY EMPIRE</h1>
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
 
-    <div class="stats">
+    <header class="topbar">
 
-        <div>
-            💰 Деньги:
-            <span id="money">0</span>
+        <div class="logo">
+            FACTORY EMPIRE
         </div>
 
-        <div>
-            ⭐ Уровень корпорации:
-            <span id="playerLevel">1</span>
+        <div class="corporation-level">
+            УРОВЕНЬ <span id="playerLevel">1</span>
         </div>
 
-        <div>
-            ✨ XP:
-            <span id="xp">0</span> /
-            <span id="xpNeeded">100</span>
+    </header>
+
+
+    <!-- РЕСУРСЫ -->
+
+    <section class="resources">
+
+        <div class="resource">
+            <span class="resource-icon money-icon">₽</span>
+            <div>
+                <small>Деньги</small>
+                <strong id="money">0</strong>
+            </div>
         </div>
 
-    </div>
+        <div class="resource">
+            <span class="resource-icon ore-icon">●</span>
+            <div>
+                <small>Руда</small>
+                <strong id="ore">0</strong>
+            </div>
+        </div>
 
+        <div class="resource">
+            <span class="resource-icon metal-icon">◆</span>
+            <div>
+                <small>Металл</small>
+                <strong id="metal">0</strong>
+            </div>
+        </div>
+
+        <div class="resource">
+            <span class="resource-icon parts-icon">■</span>
+            <div>
+                <small>Детали</small>
+                <strong id="parts">0</strong>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- XP -->
+
+    <section class="xp-section">
+
+        <div class="xp-label">
+            <span>Опыт корпорации</span>
+
+            <span>
+                <span id="xp">0</span> /
+                <span id="xpNeeded">100</span>
+            </span>
+        </div>
+
+        <div class="xp-bar">
+            <div id="xpProgress"></div>
+        </div>
+
+    </section>
+
+
+    <!-- УВЕДОМЛЕНИЕ О НОВОМ УРОВНЕ -->
 
     <div id="levelUpMessage" class="level-up">
-        🎉 Вы прокачали уровень!
+        УРОВЕНЬ ПОВЫШЕН
     </div>
 
 
-    <div class="resources">
+    <!-- ЭКРАН ПРОИЗВОДСТВА -->
 
-        <div class="resource">
-            ⛏️ Руда
-            <br>
-            <b id="ore">0</b>
+    <main id="productionScreen" class="screen">
+
+        <h1>Производство</h1>
+
+        <div class="production-grid">
+
+
+            <!-- ШАХТА -->
+
+            <article class="building large-building">
+
+                <div class="building-image mine-image">
+                    ⛏
+                </div>
+
+                <div class="building-info">
+
+                    <div class="building-title">
+                        <h2>Шахта</h2>
+
+                        <span>
+                            Ур. <b id="mineLevel">1</b>
+                        </span>
+                    </div>
+
+                    <p>
+                        Добывает руду из месторождения.
+                    </p>
+
+                    <div class="production-value">
+                        +<span id="minePower">1</span> руды
+                    </div>
+
+                    <button onclick="mine()" class="main-button">
+                        ДОБЫТЬ
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <!-- ПЛАВИЛЬНЯ -->
+
+            <article class="building">
+
+                <div class="building-image smelter-image">
+                    ♨
+                </div>
+
+                <div class="building-info">
+
+                    <div class="building-title">
+                        <h2>Плавильня</h2>
+
+                        <span>
+                            Ур. <b id="smelterLevel">1</b>
+                        </span>
+                    </div>
+
+                    <p>
+                        Перерабатывает руду в металл.
+                    </p>
+
+                    <div class="recipe">
+                        2 <span>●</span>
+                        →
+                        1 <span>◆</span>
+                    </div>
+
+                    <button onclick="smelt()" class="main-button">
+                        ПРОИЗВЕСТИ
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <!-- ЗАВОД -->
+
+            <article class="building">
+
+                <div class="building-image factory-image">
+                    ▦
+                </div>
+
+                <div class="building-info">
+
+                    <div class="building-title">
+                        <h2>Завод</h2>
+
+                        <span>
+                            Ур. <b id="factoryLevel">1</b>
+                        </span>
+                    </div>
+
+                    <p>
+                        Производит детали из металла.
+                    </p>
+
+                    <div class="recipe">
+                        2 <span>◆</span>
+                        →
+                        1 <span>■</span>
+                    </div>
+
+                    <button onclick="produceParts()" class="main-button">
+                        ПРОИЗВЕСТИ
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <!-- ПРОДАЖА -->
+
+            <article class="building">
+
+                <div class="building-image sale-image">
+                    ⇢
+                </div>
+
+                <div class="building-info">
+
+                    <div class="building-title">
+                        <h2>Сбыт</h2>
+                    </div>
+
+                    <p>
+                        Отправляет готовую продукцию покупателям.
+                    </p>
+
+                    <div class="production-value">
+                        1 деталь = 100 ₽
+                    </div>
+
+                    <button onclick="sellParts()" class="main-button">
+                        ПРОДАТЬ
+                    </button>
+
+                </div>
+
+            </article>
+
         </div>
 
-        <div class="resource">
-            🔩 Металл
-            <br>
-            <b id="metal">0</b>
-        </div>
-
-        <div class="resource">
-            ⚙️ Детали
-            <br>
-            <b id="parts">0</b>
-        </div>
-
-    </div>
+    </main>
 
 
-    <div class="buildings">
+    <!-- ЭКРАН УЛУЧШЕНИЙ -->
+
+    <main id="upgradeScreen" class="screen hidden">
+
+        <h1>Улучшения</h1>
+
+        <p class="screen-description">
+            Развивайте производственные мощности корпорации.
+        </p>
 
 
-        <div class="building">
+        <!-- ШАХТА -->
 
-            <div class="building-icon">⛏️</div>
+        <article class="upgrade-card">
 
-            <h2>Шахта</h2>
+            <div class="upgrade-icon">
+                ⛏
+            </div>
 
-            <p>
-                Уровень:
-                <b id="mineLevel">1</b>
-            </p>
+            <div class="upgrade-content">
 
-            <p>
-                Добыча:
-                <b id="minePower">1</b> руды
-            </p>
+                <div class="upgrade-header">
 
-            <button onclick="mine()">
-                ⛏️ ДОБЫТЬ РУДУ
-            </button>
+                    <h2>Шахта</h2>
 
-            <br>
+                    <span>
+                        Ур. <b id="upgradeMineLevel">1</b>
+                    </span>
 
-            <button onclick="upgradeMine()">
-                🔧 Улучшить шахту
-                💰 <span id="mineCost">50</span>
-            </button>
+                </div>
 
-        </div>
+                <p>
+                    Увеличивает количество добываемой руды.
+                </p>
 
+                <div class="upgrade-effect">
+                    Добыча:
+                    <b id="upgradeMinePower">1</b>
+                    → 
+                    <b id="upgradeMineNextPower">2</b>
+                </div>
 
-        <div class="building">
+                <button onclick="upgradeMine()" class="upgrade-button">
+                    УЛУЧШИТЬ —
+                    <span id="mineCost">50</span> ₽
+                </button>
 
-            <div class="building-icon">🔥</div>
+            </div>
 
-            <h2>Плавильня</h2>
-
-            <p>
-                Уровень:
-                <b id="smelterLevel">1</b>
-            </p>
-
-            <p>
-                2 ⛏️ → 1 🔩
-            </p>
-
-            <button onclick="smelt()">
-                🔥 ПЛАВИТЬ МЕТАЛЛ
-            </button>
-
-        </div>
+        </article>
 
 
-        <div class="building">
+        <!-- ПЛАВИЛЬНЯ -->
 
-            <div class="building-icon">🏭</div>
+        <article class="upgrade-card">
 
-            <h2>Завод</h2>
+            <div class="upgrade-icon">
+                ♨
+            </div>
 
-            <p>
-                Уровень:
-                <b id="factoryLevel">1</b>
-            </p>
+            <div class="upgrade-content">
 
-            <p>
-                2 🔩 → 1 ⚙️
-            </p>
+                <div class="upgrade-header">
 
-            <button onclick="produceParts()">
-                🏭 ПРОИЗВЕСТИ ДЕТАЛИ
-            </button>
+                    <h2>Плавильня</h2>
 
-        </div>
+                    <span>
+                        Ур. <b id="upgradeSmelterLevel">1</b>
+                    </span>
+
+                </div>
+
+                <p>
+                    Повышает эффективность переработки.
+                </p>
+
+                <div class="upgrade-effect">
+                    Производство металла увеличивается.
+                </div>
+
+                <button onclick="upgradeSmelter()" class="upgrade-button">
+                    УЛУЧШИТЬ —
+                    <span id="smelterCost">100</span> ₽
+                </button>
+
+            </div>
+
+        </article>
 
 
-        <div class="building">
+        <!-- ЗАВОД -->
 
-            <div class="building-icon">🚚</div>
+        <article class="upgrade-card">
 
-            <h2>Продажа</h2>
+            <div class="upgrade-icon">
+                ▦
+            </div>
 
-            <p>
-                1 ⚙️ = 💰 100
-            </p>
+            <div class="upgrade-content">
 
-            <button onclick="sellParts()">
-                💰 ПРОДАТЬ ДЕТАЛИ
-            </button>
+                <div class="upgrade-header">
 
-        </div>
+                    <h2>Завод</h2>
 
-    </div>
+                    <span>
+                        Ур. <b id="upgradeFactoryLevel">1</b>
+                    </span>
+
+                </div>
+
+                <p>
+                    Увеличивает эффективность производства деталей.
+                </p>
+
+                <div class="upgrade-effect">
+                    Производительность увеличивается.
+                </div>
+
+                <button onclick="upgradeFactory()" class="upgrade-button">
+                    УЛУЧШИТЬ —
+                    <span id="factoryCost">200</span> ₽
+                </button>
+
+            </div>
+
+        </article>
+
+    </main>
+
+
+    <!-- НИЖНЯЯ НАВИГАЦИЯ -->
+
+    <nav class="navigation">
+
+        <button
+            id="productionTab"
+            onclick="showScreen('production')"
+            class="nav-button active">
+
+            <span>▦</span>
+            <small>Производство</small>
+
+        </button>
+
+
+        <button
+            id="upgradeTab"
+            onclick="showScreen('upgrades')"
+            class="nav-button">
+
+            <span>⚙</span>
+            <small>Улучшения</small>
+
+        </button>
+
+
+        <button
+            class="nav-button locked">
+
+            <span>◇</span>
+            <small>Локации</small>
+
+        </button>
+
+
+        <button
+            class="nav-button locked">
+
+            <span>✦</span>
+            <small>Таланты</small>
+
+        </button>
+
+    </nav>
 
 </div>
 
 
-<script>
-
-let money = Number(localStorage.getItem("money")) || 0;
-
-let ore = Number(localStorage.getItem("ore")) || 0;
-
-let metal = Number(localStorage.getItem("metal")) || 0;
-
-let parts = Number(localStorage.getItem("parts")) || 0;
-
-let playerLevel = Number(localStorage.getItem("playerLevel")) || 1;
-
-let xp = Number(localStorage.getItem("xp")) || 0;
-
-let mineLevel = Number(localStorage.getItem("mineLevel")) || 1;
-
-
-function saveGame() {
-
-    localStorage.setItem("money", money);
-    localStorage.setItem("ore", ore);
-    localStorage.setItem("metal", metal);
-    localStorage.setItem("parts", parts);
-    localStorage.setItem("playerLevel", playerLevel);
-    localStorage.setItem("xp", xp);
-    localStorage.setItem("mineLevel", mineLevel);
-
-}
-
-
-function mine() {
-
-    ore += mineLevel;
-
-    saveGame();
-
-    updateUI();
-
-}
-
-
-function upgradeMine() {
-
-    let cost = mineLevel * 50;
-
-    if (money >= cost) {
-
-        money -= cost;
-
-        mineLevel++;
-
-        saveGame();
-
-        updateUI();
-
-    } else {
-
-        alert("Недостаточно денег!");
-
-    }
-
-}
-
-
-function smelt() {
-
-    if (ore >= 2) {
-
-        ore -= 2;
-
-        metal++;
-
-        saveGame();
-
-        updateUI();
-
-    } else {
-
-        alert("Нужно 2 руды!");
-
-    }
-
-}
-
-
-function produceParts() {
-
-    if (metal >= 2) {
-
-        metal -= 2;
-
-        parts++;
-
-        saveGame();
-
-        updateUI();
-
-    } else {
-
-        alert("Нужно 2 металла!");
-
-    }
-
-}
-
-
-function sellParts() {
-
-    if (parts >= 1) {
-
-        parts--;
-
-        money += 100;
-
-        addXP(20);
-
-        saveGame();
-
-        updateUI();
-
-    } else {
-
-        alert("Нет деталей для продажи!");
-
-    }
-
-}
-
-
-function addXP(amount) {
-
-    xp += amount;
-
-    let needed = playerLevel * 100;
-
-    while (xp >= needed) {
-
-        xp -= needed;
-
-        playerLevel++;
-
-        needed = playerLevel * 100;
-
-        showLevelUp();
-
-    }
-
-}
-
-
-function showLevelUp() {
-
-    let message =
-        document.getElementById("levelUpMessage");
-
-    message.style.display = "block";
-
-    setTimeout(function() {
-
-        message.style.display = "none";
-
-    }, 2500);
-
-}
-
-
-function updateUI() {
-
-    document.getElementById("money").textContent = money;
-
-    document.getElementById("ore").textContent = ore;
-
-    document.getElementById("metal").textContent = metal;
-
-    document.getElementById("parts").textContent = parts;
-
-    document.getElementById("playerLevel").textContent = playerLevel;
-
-    document.getElementById("xp").textContent = xp;
-
-    document.getElementById("xpNeeded").textContent =
-        playerLevel * 100;
-
-    document.getElementById("mineLevel").textContent =
-        mineLevel;
-
-    document.getElementById("minePower").textContent =
-        mineLevel;
-
-    document.getElementById("mineCost").textContent =
-        mineLevel * 50;
-
-}
-
-
-updateUI();
-
-</script>
+<script src="game.js"></script>
 
 </body>
-
 </html>
