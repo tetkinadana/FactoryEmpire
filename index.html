@@ -1,41 +1,10 @@
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Factory Empire</title>
-</head>
-
-<body style="background:#20242a;color:white;text-align:center;font-family:Arial;padding:30px">
-
-    <h1>🏭 FACTORY EMPIRE</h1>
-
-    <h2>💰 Деньги: <span id="money">0</span></h2>
-    <h2>⛏️ Руда: <span id="ore">0</span></h2>
-
-    <div style="font-size:100px;margin:30px">⛏️</div>
-
-    <button onclick="mine()" style="font-size:22px;padding:20px;border-radius:15px">
-        ⛏️ ДОБЫТЬ РУДУ
-    </button>
-
-    <script>
-        let ore = 0;
-
-        function mine() {
-            ore++;
-            document.getElementById("ore").textContent = ore;
-        }
-    </script>
-
-</body>
-</html>
-
-
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Factory Empire</title>
 
     <style>
@@ -55,7 +24,6 @@
 
         h1 {
             font-size: 38px;
-            margin-bottom: 20px;
         }
 
         .stats {
@@ -67,15 +35,15 @@
         }
 
         .stats div {
+            margin: 8px;
             font-size: 20px;
-            margin: 7px;
         }
 
         .resources {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .resource {
@@ -100,11 +68,7 @@
         }
 
         .building-icon {
-            font-size: 65px;
-        }
-
-        .building h2 {
-            margin: 8px 0;
+            font-size: 60px;
         }
 
         button {
@@ -122,11 +86,6 @@
             background: #4a535f;
         }
 
-        button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
         .level-up {
             display: none;
             background: #343b45;
@@ -137,11 +96,9 @@
             font-size: 20px;
         }
 
-        max-width: 650px {
-            .resources {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 650px) {
 
+            .resources,
             .buildings {
                 grid-template-columns: 1fr;
             }
@@ -151,6 +108,7 @@
             }
         }
     </style>
+
 </head>
 
 <body>
@@ -159,7 +117,6 @@
 
     <h1>🏭 FACTORY EMPIRE</h1>
 
-    <!-- ОСНОВНЫЕ ПОКАЗАТЕЛИ -->
     <div class="stats">
 
         <div>
@@ -180,43 +137,37 @@
 
     </div>
 
+
     <div id="levelUpMessage" class="level-up">
         🎉 Вы прокачали уровень!
     </div>
 
-    <!-- РЕСУРСЫ -->
 
     <div class="resources">
 
         <div class="resource">
             ⛏️ Руда
-            
-
-         <b id="ore">0</b>
+            <br>
+            <b id="ore">0</b>
         </div>
 
         <div class="resource">
             🔩 Металл
-            
-
-        <b id="metal">0</b>
+            <br>
+            <b id="metal">0</b>
         </div>
 
         <div class="resource">
             ⚙️ Детали
-            
-
- 
-       <b id="parts">0</b>
+            <br>
+            <b id="parts">0</b>
         </div>
 
     </div>
 
-    <!-- ЗДАНИЯ -->
 
     <div class="buildings">
 
-        <!-- ШАХТА -->
 
         <div class="building">
 
@@ -238,101 +189,15 @@
                 ⛏️ ДОБЫТЬ РУДУ
             </button>
 
-            
+            <br>
 
-  
-      <button onclick="upgradeMine()">
-
-
-evel++;
-
-            needed = playerLevel * 100;
-
-            showLevelUp();
-
-        }
-
-    }
-
-    // =========================
-    // УРОВЕНЬ
-    // =========================
-
-    function showLevelUp() {
-
-        let message =
-            document.getElementById("levelUpMessage");
-
-        message.style.display = "block";
-
-        setTimeout(function() {
-
-            message.style.display = "none";
-
-        }, 2500);
-
-    }
-
-    // =========================
-    // ОБНОВЛЕНИЕ ЭКРАНА
-    // =========================
-
-    function updateUI() {
-
-        document.getElementById("money")
-            .textContent = money;
-
-        document.getElementById("ore")
-            .textContent = ore;
-
-        document.getElementById("metal")
-            .textContent = metal;
-
-        document.getElementById("parts")
-            .textContent = parts;
-
-        document.getElementById("playerLevel")
-            .textContent = playerLevel;
-
-        document.getElementById("xp")
-            .textContent = xp;
-
-        document.getElementById("xpNeeded")
-            .textContent = playerLevel * 100;
-
-        document.getElementById("mineLevel")
-            .textContent = mineLevel;
-
-        document.getElementById("minePower")
-            .textContent = mineLevel;
-
-        document.getElementById("mineCost")
-            .textContent = mineLevel * 50;
-
-    }
-
-    // =========================
-    // ЗАПУСК
-    // =========================
-
-    updateUI();
-
-</script>
-
-</body>
-</html>
-
-
-🔧 Улучшить шахту
-                
-
-    
-        💰 <span id="mineCost">50</span>
+            <button onclick="upgradeMine()">
+                🔧 Улучшить шахту
+                💰 <span id="mineCost">50</span>
             </button>
 
         </div>
 
-        <!-- ПЛАВИЛЬНЯ -->
 
         <div class="building">
 
@@ -355,7 +220,6 @@ evel++;
 
         </div>
 
-        <!-- ЗАВОД -->
 
         <div class="building">
 
@@ -378,7 +242,6 @@ evel++;
 
         </div>
 
-        <!-- ПРОДАЖА -->
 
         <div class="building">
 
@@ -400,179 +263,206 @@ evel++;
 
 </div>
 
+
 <script>
 
-    // =========================
-    // ИГРОВЫЕ ДАННЫЕ
-    // =========================
+let money = Number(localStorage.getItem("money")) || 0;
 
-    let money = Number(localStorage.getItem("money")) || 0;
+let ore = Number(localStorage.getItem("ore")) || 0;
 
-    let ore = Number(localStorage.getItem("ore")) || 0;
+let metal = Number(localStorage.getItem("metal")) || 0;
 
-    let metal = Number(localStorage.getItem("metal")) || 0;
+let parts = Number(localStorage.getItem("parts")) || 0;
 
-    let parts = Number(localStorage.getItem("parts")) || 0;
+let playerLevel = Number(localStorage.getItem("playerLevel")) || 1;
 
-    let playerLevel =
-        Number(localStorage.getItem("playerLevel")) || 1;
+let xp = Number(localStorage.getItem("xp")) || 0;
 
-    let xp =
-        Number(localStorage.getItem("xp")) || 0;
+let mineLevel = Number(localStorage.getItem("mineLevel")) || 1;
 
-    let mineLevel =
-        Number(localStorage.getItem("mineLevel")) || 1;
 
-    // =========================
-    // СОХРАНЕНИЕ
-    // =========================
+function saveGame() {
 
-    function saveGame() {
+    localStorage.setItem("money", money);
+    localStorage.setItem("ore", ore);
+    localStorage.setItem("metal", metal);
+    localStorage.setItem("parts", parts);
+    localStorage.setItem("playerLevel", playerLevel);
+    localStorage.setItem("xp", xp);
+    localStorage.setItem("mineLevel", mineLevel);
 
-        localStorage.setItem("money", money);
+}
 
-        localStorage.setItem("ore", ore);
 
-        localStorage.setItem("metal", metal);
+function mine() {
 
-        localStorage.setItem("parts", parts);
+    ore += mineLevel;
 
-        localStorage.setItem("playerLevel", playerLevel);
+    saveGame();
 
-        localStorage.setItem("xp", xp);
+    updateUI();
 
-        localStorage.setItem("mineLevel", mineLevel);
+}
 
-    }
 
-    // =========================
-    // ШАХТА
-    // =========================
+function upgradeMine() {
 
-    function mine() {
+    let cost = mineLevel * 50;
 
-        let power = mineLevel;
+    if (money >= cost) {
 
-        ore += power;
+        money -= cost;
+
+        mineLevel++;
 
         saveGame();
 
         updateUI();
 
-    }
+    } else {
 
-    // =========================
-    // УЛУЧШЕНИЕ ШАХТЫ
-    // =========================
-
-    function upgradeMine() {
-
-        let cost = mineLevel * 50;
-
-        if (money >= cost) {
-
-            money -= cost;
-
-            mineLevel++;
-
-            saveGame();
-
-            updateUI();
-
-        } else {
-
-            alert("Недостаточно денег!");
-
-        }
+        alert("Недостаточно денег!");
 
     }
 
-    // =========================
-    // ПЛАВИЛЬНЯ
-    // =========================
+}
 
-    function smelt() {
 
-        if (ore >= 2) {
+function smelt() {
 
-            ore -= 2;
+    if (ore >= 2) {
 
-            metal++;
+        ore -= 2;
 
-            saveGame();
+        metal++;
 
-            updateUI();
+        saveGame();
 
-        } else {
+        updateUI();
 
-            alert("Нужно 2 руды!");
+    } else {
 
-        }
+        alert("Нужно 2 руды!");
 
     }
 
-    // =========================
-    // ЗАВОД
-    // =========================
+}
 
-    function produceParts() {
 
-        if (metal >= 2) {
+function produceParts() {
 
-            metal -= 2;
+    if (metal >= 2) {
 
-            parts++;
+        metal -= 2;
 
-            saveGame();
+        parts++;
 
-            updateUI();
+        saveGame();
 
-        } else {
+        updateUI();
 
-            alert("Нужно 2 металла!");
+    } else {
 
-        }
+        alert("Нужно 2 металла!");
 
     }
 
-    // =========================
-    // ПРОДАЖА
-    // =========================
+}
 
-    function sellParts() {
 
-        if (parts >= 1) {
+function sellParts() {
 
-            parts--;
+    if (parts >= 1) {
 
-            money += 100;
+        parts--;
 
-            addXP(20);
+        money += 100;
 
-            saveGame();
+        addXP(20);
 
-            updateUI();
+        saveGame();
 
-        } else {
+        updateUI();
 
-            alert("Нет деталей для продажи!");
+    } else {
 
-        }
+        alert("Нет деталей для продажи!");
 
     }
 
-    // =========================
-    // XP
-    // =========================
+}
 
-    function addXP(amount) {
 
-        xp += amount;
+function addXP(amount) {
 
-        let needed = playerLevel * 100;
+    xp += amount;
 
-        while (xp >= needed) {
+    let needed = playerLevel * 100;
 
-            xp -= needed;
+    while (xp >= needed) {
 
-            playerL
+        xp -= needed;
+
+        playerLevel++;
+
+        needed = playerLevel * 100;
+
+        showLevelUp();
+
+    }
+
+}
+
+
+function showLevelUp() {
+
+    let message =
+        document.getElementById("levelUpMessage");
+
+    message.style.display = "block";
+
+    setTimeout(function() {
+
+        message.style.display = "none";
+
+    }, 2500);
+
+}
+
+
+function updateUI() {
+
+    document.getElementById("money").textContent = money;
+
+    document.getElementById("ore").textContent = ore;
+
+    document.getElementById("metal").textContent = metal;
+
+    document.getElementById("parts").textContent = parts;
+
+    document.getElementById("playerLevel").textContent = playerLevel;
+
+    document.getElementById("xp").textContent = xp;
+
+    document.getElementById("xpNeeded").textContent =
+        playerLevel * 100;
+
+    document.getElementById("mineLevel").textContent =
+        mineLevel;
+
+    document.getElementById("minePower").textContent =
+        mineLevel;
+
+    document.getElementById("mineCost").textContent =
+        mineLevel * 50;
+
+}
+
+
+updateUI();
+
+</script>
+
+</body>
+
+</html>
