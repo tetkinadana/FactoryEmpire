@@ -1,1171 +1,508 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Factory Empire</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
 
-<div class="game">
+<header class="topbar">
+    <div class="logo">FACTORY EMPIRE</div>
 
-    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+    <button class="settings-button" onclick="openModal('settingsModal')">
+        ⚙
+    </button>
 
-    <header class="topbar">
+    <div class="level">
+        УРОВЕНЬ <span id="playerLevel">1</span>
+    </div>
+</header>
 
-        <div class="logo">
-            FACTORY EMPIRE
+
+<section class="resources">
+
+    <div class="resource">
+        💰
+        <span id="money">0</span>
+    </div>
+
+    <div class="resource">
+        🪨
+        <span id="ore">0</span>
+    </div>
+
+    <div class="resource">
+        🔩
+        <span id="metal">0</span>
+    </div>
+
+    <div class="resource">
+        ⚙
+        <span id="parts">0</span>
+    </div>
+
+</section>
+
+
+<section class="xp-section">
+
+    <div class="xp-text">
+        XP:
+        <span id="xp">0</span>
+        /
+        <span id="xpNeeded">100</span>
+    </div>
+
+    <div class="xp-bar">
+        <div id="xpFill"></div>
+    </div>
+
+</section>
+
+
+<div id="levelMessage" class="level-message"></div>
+
+
+<main id="mainScreen">
+
+    <section class="mine-panel">
+
+        <div class="mine-icon">⛏</div>
+
+        <h1>ШАХТА</h1>
+
+        <div class="automatic">
+            Автоматически:
+            <b id="autoMining">0.1</b>
+            руды / сек
         </div>
 
-        <div class="top-actions">
-
-            <button onclick="openWindow('settingsWindow')">
-                ⚙
-            </button>
-
+        <div class="manual">
+            Ручная добыча:
+            <b id="manualMining">+0.1</b>
+            руды
         </div>
 
-        <div class="corporation-level">
-            УРОВЕНЬ
-            <b id="playerLevel">1</b>
-        </div>
+        <button class="mine-button" onclick="mine()">
+            ⛏ ДОБЫТЬ РУДУ
+        </button>
 
-    </header>
-
-
-    <!-- РЕСУРСЫ -->
-
-    <section class="resources">
-
-        <div class="resource">
-            <span class="resource-icon">₣</span>
-
-            <div>
-                <small>Факсы</small>
-                <strong id="money">0.0</strong>
-            </div>
-        </div>
-
-
-        <div class="resource">
-            <span class="resource-icon">●</span>
-
-            <div>
-                <small>Руда</small>
-                <strong id="ore">0.0</strong>
-            </div>
-        </div>
-
-
-        <div class="resource">
-            <span class="resource-icon">◆</span>
-
-            <div>
-                <small>Металл</small>
-                <strong id="metal">0.0</strong>
-            </div>
-        </div>
-
-
-        <div class="resource">
-            <span class="resource-icon">■</span>
-
-            <div>
-                <small>Детали</small>
-                <strong id="parts">0.0</strong>
-            </div>
-        </div>
-
-    </section>
-
-
-    <!-- XP -->
-
-    <section class="xp-section">
-
-        <div class="xp-label">
-
-            <span>
-                Опыт корпорации
-            </span>
-
-            <span>
-
-                <span id="xp">0.0</span>
-
-                /
-
-                <span id="xpNeeded">100.0</span>
-
-            </span>
-
-        </div>
-
-
-        <div class="xp-bar">
-
-            <div id="xpProgress"></div>
-
+        <div class="mine-level">
+            Уровень шахты:
+            <b id="mineLevel">1</b>
         </div>
 
     </section>
 
 
-    <!-- УВЕДОМЛЕНИЕ -->
+    <section class="action-grid">
 
-    <div id="levelUpMessage" class="level-up">
+        <button class="action-card" onclick="sellParts()">
+            <span>⇢</span>
+            <b>СБЫТ</b>
+            <small>Продать детали</small>
+        </button>
 
-        ⭐ УРОВЕНЬ ПОВЫШЕН
+        <button class="action-card" onclick="openModal('buildingsModal')">
+            <span>▦</span>
+            <b>ЗДАНИЯ</b>
+            <small>Производство</small>
+        </button>
+
+        <button class="action-card" onclick="openModal('workersModal')">
+            <span>👷</span>
+            <b>РАБОЧИЕ</b>
+            <small>Персонал</small>
+        </button>
+
+        <button class="action-card" onclick="showScreen('upgradeScreen')">
+            <span>⚙</span>
+            <b>УЛУЧШЕНИЯ</b>
+            <small>Развитие</small>
+        </button>
+
+    </section>
+
+
+    <section class="summary-grid">
+
+        <div class="summary-card">
+            <span>Руда</span>
+            <b id="summaryOre">0</b>
+        </div>
+
+        <div class="summary-card">
+            <span>Металл</span>
+            <b id="summaryMetal">0</b>
+        </div>
+
+        <div class="summary-card">
+            <span>Детали</span>
+            <b id="summaryParts">0</b>
+        </div>
+
+        <div class="summary-card">
+            <span>Рабочие</span>
+            <b id="summaryWorkers">0</b>
+        </div>
+
+    </section>
+
+</main>
+
+
+<section id="upgradeScreen" class="screen hidden">
+
+    <h2>УЛУЧШЕНИЯ</h2>
+
+    <div class="upgrade-card">
 
         <div>
-            +1 кредит таланта
-        </div>
-
-    </div>
-
-
-    <!-- ГЛАВНЫЙ ЭКРАН -->
-
-    <main id="mainScreen" class="screen">
-
-        <h1>Производство</h1>
-
-
-        <!-- ДОБЫЧА -->
-
-        <section class="main-production">
-
-            <div class="mine-symbol">
-                ⛏
-            </div>
-
-
-            <h2>
-                Добыча руды
-            </h2>
-
-
-            <div class="ore-rate">
-
-                Автоматически:
-
-                <b id="orePerSecond">
-                    0.1
-                </b>
-
-                / сек
-
-            </div>
-
-
-            <div class="manual-rate">
-
-                Ручная добыча:
-
-                <b>
-                    +<span id="manualMining">
-                        0.1
-                    </span>
-                </b>
-
-                руды
-
-            </div>
-
-
-            <button
-                onclick="mine()"
-                class="mine-button">
-
-                ⛏ ДОБЫТЬ РУДУ
-
-            </button>
-
-
-            <div class="mine-level">
-
-                Шахта:
-
-                <b>
-                    уровень <span id="mineLevel">1</span>
-                </b>
-
-            </div>
-
-        </section>
-
-
-        <!-- ОСНОВНЫЕ ДЕЙСТВИЯ -->
-
-        <section class="main-actions">
-
-            <button
-                onclick="sellParts()"
-                class="action-card">
-
-                <span>⇢</span>
-
-                <strong>
-                    СБЫТ
-                </strong>
-
-                <small>
-                    Продать детали
-                </small>
-
-            </button>
-
-
-            <button
-                onclick="openWindow('buildingsWindow')"
-                class="action-card">
-
-                <span>▦</span>
-
-                <strong>
-                    ЗДАНИЯ
-                </strong>
-
-                <small>
-                    Производство
-                </small>
-
-            </button>
-
-
-            <button
-                onclick="openWindow('workersWindow')"
-                class="action-card">
-
-                <span>👷</span>
-
-                <strong>
-                    РАБОЧИЕ
-                </strong>
-
-                <small>
-                    Персонал
-                </small>
-
-            </button>
-
-
-            <button
-                onclick="showScreen('upgrades')"
-                class="action-card">
-
-                <span>⚙</span>
-
-                <strong>
-                    УЛУЧШЕНИЯ
-                </strong>
-
-                <small>
-                    Развитие
-                </small>
-
-            </button>
-
-        </section>
-
-
-        <!-- БЫСТРАЯ ИНФОРМАЦИЯ -->
-
-        <section class="production-summary">
-
-            <div>
-
-                <small>
-                    Автоматическая добыча
-                </small>
-
-                <b>
-                    <span id="summaryOre">
-                        0.1
-                    </span>
-                    руды/сек
-                </b>
-
-            </div>
-
-
-            <div>
-
-                <small>
-                    Автоматическое производство
-                </small>
-
-                <b>
-                    АКТИВНО
-                </b>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- ЭКРАН УЛУЧШЕНИЙ -->
-
-    <main id="upgradeScreen" class="screen hidden">
-
-        <button
-            onclick="showScreen('main')"
-            class="back-button">
-
-            ← Назад
-
-        </button>
-
-
-        <h1>
-            Улучшения
-        </h1>
-
-
-        <article class="upgrade-card">
-
-            <div class="upgrade-icon">
-                ⛏
-            </div>
-
-
-            <div class="upgrade-content">
-
-                <div class="upgrade-header">
-
-                    <h2>
-                        Шахта
-                    </h2>
-
-                    <span>
-
-                        Ур.
-                        <b id="upgradeMineLevel">
-                            1
-                        </b>
-
-                    </span>
-
-                </div>
-
-
-                <p>
-                    Увеличивает автоматическую добычу.
-                </p>
-
-
-                <div class="upgrade-effect">
-
-                    <span id="upgradeMinePower">
-                        0.1
-                    </span>
-
-                    →
-
-                    <span id="upgradeMineNextPower">
-                        0.2
-                    </span>
-
-                    руды/сек
-
-                </div>
-
-
-                <button
-                    onclick="upgradeMine()"
-                    class="upgrade-button">
-
-                    УЛУЧШИТЬ —
-
-                    <span id="mineCost">
-                        50
-                    </span>
-
-                    ₣
-
-                </button>
-
-            </div>
-
-        </article>
-
-
-        <article class="upgrade-card">
-
-            <div class="upgrade-icon">
-                ♨
-            </div>
-
-
-            <div class="upgrade-content">
-
-                <div class="upgrade-header">
-
-                    <h2>
-                        Плавильня
-                    </h2>
-
-                    <span>
-                        Ур.
-                        <b id="upgradeSmelterLevel">
-                            1
-                        </b>
-                    </span>
-
-                </div>
-
-
-                <p>
-                    Увеличивает автоматический выпуск металла.
-                </p>
-
-
-                <div class="upgrade-effect">
-
-                    Выход:
-
-                    <span id="smelterOutput">
-                        0.1
-                    </span>
-
-                    металла/сек
-
-                </div>
-
-
-                <button
-                    onclick="upgradeSmelter()"
-                    class="upgrade-button">
-
-                    УЛУЧШИТЬ —
-
-                    <span id="smelterCost">
-                        100
-                    </span>
-
-                    ₣
-
-                </button>
-
-            </div>
-
-        </article>
-
-
-        <article class="upgrade-card">
-
-            <div class="upgrade-icon">
-                ▦
-            </div>
-
-
-            <div class="upgrade-content">
-
-                <div class="upgrade-header">
-
-                    <h2>
-                        Завод деталей
-                    </h2>
-
-                    <span>
-                        Ур.
-                        <b id="upgradeFactoryLevel">
-                            1
-                        </b>
-                    </span>
-
-                </div>
-
-
-                <p>
-                    Увеличивает автоматический выпуск деталей.
-                </p>
-
-
-                <div class="upgrade-effect">
-
-                    Выход:
-
-                    <span id="factoryOutput">
-                        0.1
-                    </span>
-
-                    деталей/сек
-
-                </div>
-
-
-                <button
-                    onclick="upgradeFactory()"
-                    class="upgrade-button">
-
-                    УЛУЧШИТЬ —
-
-                    <span id="factoryCost">
-                        200
-                    </span>
-
-                    ₣
-
-                </button>
-
-            </div>
-
-        </article>
-
-    </main>
-
-
-    <!-- ОКНО ЗДАНИЙ -->
-
-    <div
-        id="buildingsWindow"
-        class="modal hidden">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-
-                <h2>
-                    Все здания
-                </h2>
-
-                <button onclick="closeWindow('buildingsWindow')">
-                    ×
-                </button>
-
-            </div>
-
-
-            <div class="buildings-list">
-
-
-                <!-- ШАХТА -->
-
-                <div class="building-row">
-
-                    <div class="building-icon">
-                        ⛏
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Шахта
-                        </h3>
-
-                        <p>
-                            Добыча руды
-                        </p>
-
-                        <small>
-                            Ур. <b id="buildingMineLevel">1</b>
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-                <!-- КАРЬЕР -->
-
-                <div class="building-row">
-
-                    <div class="building-icon">
-                        ◈
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Карьер
-                        </h3>
-
-                        <p>
-                            Дополнительная добыча сырья
-                        </p>
-
-                        <small>
-                            Пока заблокирован
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-                <!-- ПЛАВИЛЬНЯ -->
-
-                <div class="building-row">
-
-                    <div class="building-icon">
-                        ♨
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Плавильня
-                        </h3>
-
-                        <p>
-                            Руда → металл
-                        </p>
-
-                        <small>
-                            Ур. <b id="buildingSmelterLevel">1</b>
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-                <!-- СТАЛЕЛИТЕЙНЫЙ -->
-
-                <div class="building-row">
-
-                    <div class="building-icon">
-                        ◆
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Сталелитейный цех
-                        </h3>
-
-                        <p>
-                            Улучшенная переработка металла
-                        </p>
-
-                        <small>
-                            Пока заблокирован
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-                <!-- ЗАВОД -->
-
-                <div class="building-row">
-
-                    <div class="building-icon">
-                        ▦
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Завод деталей
-                        </h3>
-
-                        <p>
-                            Металл → детали
-                        </p>
-
-                        <small>
-                            Ур. <b id="buildingFactoryLevel">1</b>
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-                <!-- СБОРКА -->
-
-                <div class="building-row">
-
-                    <div class="building-icon">
-                        ▣
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Сборочный цех
-                        </h3>
-
-                        <p>
-                            Детали → готовая продукция
-                        </p>
-
-                        <small>
-                            Пока заблокирован
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ОКНО РАБОЧИХ -->
-
-    <div
-        id="workersWindow"
-        class="modal hidden">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-
-                <h2>
-                    Рабочие
-                </h2>
-
-                <button onclick="closeWindow('workersWindow')">
-                    ×
-                </button>
-
-            </div>
-
-
-            <div class="worker-big">
-
-                <div class="worker-icon">
-                    👷
-                </div>
-
-
-                <h2>
-                    Производственный персонал
-                </h2>
-
-
-                <p>
-                    Каждый рабочий автоматически добывает
-                </p>
-
-
-                <div class="worker-production">
-                    +0.2 руды / сек
-                </div>
-
-
-                <div class="worker-stat">
-
-                    Нанято:
-
-                    <b id="workerCountMain">
-                        0
-                    </b>
-
-                </div>
-
-
-                <div class="worker-stat">
-
-                    Общая добыча рабочих:
-
-                    <b>
-                        <span id="workerProduction">
-                            0.0
-                        </span>
-                        / сек
-                    </b>
-
-                </div>
-
-
-                <button
-                    onclick="hireWorker()"
-                    class="upgrade-button">
-
-                    НАНЯТЬ РАБОЧЕГО
-
-                    <br>
-
-                    <span id="workerCost">
-                        25.0
-                    </span>
-                    ₣
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- НАСТРОЙКИ -->
-
-    <div
-        id="settingsWindow"
-        class="modal hidden">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-
-                <h2>
-                    Настройки
-                </h2>
-
-                <button onclick="closeWindow('settingsWindow')">
-                    ×
-                </button>
-
-            </div>
-
-
-            <div class="settings-list">
-
-                <button onclick="saveGame()">
-                    💾 Сохранить игру
-                </button>
-
-
-                <button onclick="showComingSoon()">
-                    🛒 Донатные пакеты
-                </button>
-
-
-                <button onclick="showComingSoon()">
-                    ⚡ Ускорители добычи
-                </button>
-
-
-                <button onclick="showComingSoon()">
-                    🔊 Звук
-                </button>
-
-
-                <button onclick="resetGame()">
-                    ⚠ Сбросить прогресс
-                </button>
-
-            </div>
-
-
-            <div class="donate-preview">
-
-                <h3>
-                    Будущие ускорители
-                </h3>
-
-                <div>
-                    ⚡ ×2 добыча — 30 минут
-                </div>
-
-                <div>
-                    ⚡ ×3 добыча — 1 час
-                </div>
-
-                <div>
-                    ⚡ ×5 добыча — 2 часа
-                </div>
-
-                <small>
-                    Система пока находится в разработке.
-                </small>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ТАЛАНТЫ -->
-
-    <main id="talentScreen" class="screen hidden">
-
-        <button
-            onclick="showScreen('main')"
-            class="back-button">
-
-            ← Назад
-
-        </button>
-
-
-        <h1>
-            Дерево талантов
-        </h1>
-
-
-        <div class="talent-points">
-
-            ✦ Кредиты талантов:
-
-            <b id="talentPoints">
-                0
-            </b>
-
-        </div>
-
-
-        <div class="talent-tree">
-
-
-            <div class="talent-card">
-
-                <div class="talent-icon">
-                    ⛏
-                </div>
-
-                <h2>
-                    Эффективность
-                </h2>
-
-                <p>
-                    +10% к добыче руды.
-                </p>
-
-                <small>
-                    Стоимость: 1 кредит
-                </small>
-
-                <button
-                    onclick="buyTalent('mining')"
-                    id="talentMining">
-
-                    ИЗУЧИТЬ
-
-                </button>
-
-            </div>
-
-
-            <div class="talent-line">
-                ↓
-            </div>
-
-
-            <div class="talent-card">
-
-                <div class="talent-icon">
-                    ₣
-                </div>
-
-                <h2>
-                    Экономика
-                </h2>
-
-                <p>
-                    +10% к доходу.
-                </p>
-
-                <small>
-                    Стоимость: 1 кредит
-                </small>
-
-                <button
-                    onclick="buyTalent('economy')"
-                    id="talentEconomy"
-                    disabled>
-
-                    ЗАБЛОКИРОВАНО
-
-                </button>
-
-            </div>
-
-
-            <div class="talent-line">
-                ↓
-            </div>
-
-
-            <div class="talent-card">
-
-                <div class="talent-icon">
-                    ▦
-                </div>
-
-                <h2>
-                    Производство
-                </h2>
-
-                <p>
-                    +10% к производству.
-                </p>
-
-                <small>
-                    Стоимость: 2 кредита
-                </small>
-
-                <button
-                    onclick="buyTalent('production')"
-                    id="talentProduction"
-                    disabled>
-
-                    ЗАБЛОКИРОВАНО
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </main>
-
-
-    <!-- ПРЕСТИЖ -->
-
-    <main id="prestigeScreen" class="screen hidden">
-
-        <button
-            onclick="showScreen('main')"
-            class="back-button">
-
-            ← Назад
-
-        </button>
-
-
-        <h1>
-            Престиж
-        </h1>
-
-
-        <div class="prestige-card">
-
-            <div class="prestige-icon">
-                ♻
-            </div>
-
-
-            <h2>
-                Перезапуск корпорации
-            </h2>
-
+            <h3>⛏ Шахта</h3>
 
             <p>
-                Престиж сбрасывает обычный прогресс,
-                но даёт постоянный бонус.
+                Уровень:
+                <b id="upgradeMineLevel">1</b>
             </p>
 
-
-            <div class="prestige-requirement">
-
-                Требуется:
-
-                <b>
-                    уровень 100
-                </b>
-
-            </div>
-
-
-            <div class="prestige-reward">
-
-                Награда:
-
-                <b>
-                    +10% ко всей добыче
-                </b>
-
-            </div>
-
-
-            <button
-                onclick="prestige()"
-                id="prestigeButton"
-                class="upgrade-button"
-                disabled>
-
-                ПРЕСТИЖ
-
-            </button>
-
+            <p>
+                Стоимость:
+                <b id="mineUpgradeCost">50</b> 💰
+            </p>
         </div>
 
-    </main>
-
-
-    <!-- НИЖНЯЯ НАВИГАЦИЯ -->
-
-    <nav class="navigation">
-
-        <button
-            id="mainTab"
-            onclick="showScreen('main')"
-            class="nav-button active">
-
-            <span>
-                ⛏
-            </span>
-
-            <small>
-                Главная
-            </small>
-
+        <button onclick="upgradeMine()">
+            УЛУЧШИТЬ
         </button>
 
+    </div>
 
-        <button
-            id="talentTab"
-            onclick="showScreen('talents')"
-            class="nav-button">
 
-            <span>
-                ✦
-            </span>
+    <div class="upgrade-card">
 
-            <small>
-                Таланты
-            </small>
+        <div>
+            <h3>🔥 Плавильня</h3>
 
+            <p>
+                Уровень:
+                <b id="upgradeSmelterLevel">1</b>
+            </p>
+
+            <p>
+                Стоимость:
+                <b id="smelterUpgradeCost">100</b> 💰
+            </p>
+        </div>
+
+        <button onclick="upgradeSmelter()">
+            УЛУЧШИТЬ
         </button>
 
+    </div>
 
-        <button
-            id="prestigeTab"
-            onclick="showScreen('prestige')"
-            class="nav-button">
 
-            <span>
-                ♻
-            </span>
+    <div class="upgrade-card">
 
-            <small>
-                Престиж
-            </small>
+        <div>
+            <h3>🏭 Завод</h3>
 
+            <p>
+                Уровень:
+                <b id="upgradeFactoryLevel">1</b>
+            </p>
+
+            <p>
+                Стоимость:
+                <b id="factoryUpgradeCost">200</b> 💰
+            </p>
+        </div>
+
+        <button onclick="upgradeFactory()">
+            УЛУЧШИТЬ
         </button>
 
+    </div>
 
-        <button
-            onclick="openWindow('settingsWindow')"
-            class="nav-button">
+</section>
 
-            <span>
-                ⚙
-            </span>
 
-            <small>
-                Настройки
-            </small>
+<!-- ЗДАНИЯ -->
 
+<div id="buildingsModal" class="modal">
+
+    <div class="modal-content">
+
+        <button class="close" onclick="closeModal('buildingsModal')">
+            ×
         </button>
 
-    </nav>
+        <h2>ЗДАНИЯ</h2>
+
+        <div class="building-card">
+            <span>⛏</span>
+            <div>
+                <b>Шахта</b>
+                <small>Добывает руду автоматически</small>
+            </div>
+        </div>
+
+        <div class="building-card">
+            <span>🪨</span>
+            <div>
+                <b>Карьер</b>
+                <small>Дополнительная добыча</small>
+            </div>
+        </div>
+
+        <div class="building-card">
+            <span>🔥</span>
+            <div>
+                <b>Плавильня</b>
+                <small>Перерабатывает руду в металл</small>
+            </div>
+        </div>
+
+        <div class="building-card">
+            <span>🏭</span>
+            <div>
+                <b>Сталелитейный цех</b>
+                <small>Производит металл</small>
+            </div>
+        </div>
+
+        <div class="building-card">
+            <span>⚙</span>
+            <div>
+                <b>Завод деталей</b>
+                <small>Производит детали</small>
+            </div>
+        </div>
+
+        <div class="building-card locked">
+            <span>🏗</span>
+            <div>
+                <b>Сборочный цех</b>
+                <small>Пока заблокирован</small>
+            </div>
+        </div>
+
+    </div>
 
 </div>
 
 
-<script src="game.js"></script>
+<!-- РАБОЧИЕ -->
+
+<div id="workersModal" class="modal">
+
+    <div class="modal-content">
+
+        <button class="close" onclick="closeModal('workersModal')">
+            ×
+        </button>
+
+        <h2>РАБОЧИЕ</h2>
+
+        <div class="worker-info">
+
+            <h3>👷 Рабочие шахты</h3>
+
+            <p>
+                Производство одного рабочего:
+                <b>+0.2 руды / сек</b>
+            </p>
+
+            <p>
+                Нанято:
+                <b id="workersCount">0</b>
+            </p>
+
+            <p>
+                Всего от рабочих:
+                <b id="workerProduction">0</b>
+                руды / сек
+            </p>
+
+            <button onclick="hireWorker()">
+                НАНЯТЬ РАБОЧЕГО — 100 💰
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- НАСТРОЙКИ -->
+
+<div id="settingsModal" class="modal">
+
+    <div class="modal-content">
+
+        <button class="close" onclick="closeModal('settingsModal')">
+            ×
+        </button>
+
+        <h2>НАСТРОЙКИ</h2>
+
+        <button onclick="saveGame()">
+            💾 СОХРАНИТЬ ИГРУ
+        </button>
+
+        <div class="future-card">
+
+            <h3>💳 Донатные пакеты</h3>
+
+            <p>Скоро появятся</p>
+
+        </div>
+
+        <div class="future-card">
+
+            <h3>⚡ Ускорители</h3>
+
+            <p>Скоро появятся</p>
+
+        </div>
+
+        <div class="future-card">
+
+            <h3>🔊 Звук</h3>
+
+            <p>Настройки звука появятся позже</p>
+
+        </div>
+
+        <div class="boost-preview">
+
+            <b>Будущие ускорители:</b>
+
+            <p>×2 добыча — 30 минут</p>
+            <p>×3 добыча — 1 час</p>
+            <p>×5 добыча — 2 часа</p>
+
+        </div>
+
+        <button onclick="resetGame()" class="danger">
+            🗑 СБРОСИТЬ ПРОГРЕСС
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ТАЛАНТЫ -->
+
+<section id="talentScreen" class="screen hidden">
+
+    <h2>ТАЛАНТЫ</h2>
+
+    <div class="talent-points">
+        Очки талантов:
+        <b id="talentPoints">0</b>
+    </div>
+
+    <div class="talent-card">
+
+        <h3>⛏ Эффективная добыча</h3>
+
+        <p>+10% к добыче руды</p>
+
+        <button onclick="buyTalent('mining')">
+            ИЗУЧИТЬ — 1
+        </button>
+
+    </div>
+
+    <div class="talent-card">
+
+        <h3>💰 Экономика</h3>
+
+        <p>+10% к доходу от продажи</p>
+
+        <button onclick="buyTalent('economy')">
+            ИЗУЧИТЬ — 1
+        </button>
+
+    </div>
+
+    <div class="talent-card">
+
+        <h3>🏭 Производство</h3>
+
+        <p>+10% к производству</p>
+
+        <button onclick="buyTalent('production')">
+            ИЗУЧИТЬ — 2
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ПРЕСТИЖ -->
+
+<section id="prestigeScreen" class="screen hidden">
+
+    <h2>ПРЕСТИЖ</h2>
+
+    <div class="prestige-card">
+
+        <h3>Новый этап корпорации</h3>
+
+        <p>
+            Престиж доступен только с
+            <b>100 уровня</b>.
+        </p>
+
+        <p>
+            Каждый престиж даёт:
+            <b>+10% к добыче</b>
+        </p>
+
+        <button onclick="prestige()">
+            ПОЛУЧИТЬ ПРЕСТИЖ
+        </button>
+
+    </div>
+
+</section>
+
+
+<nav class="bottom-nav">
+
+    <button onclick="showScreen('mainScreen')">
+        🏠
+        <span>Главная</span>
+    </button>
+
+    <button onclick="showScreen('talentScreen')">
+        🌟
+        <span>Таланты</span>
+    </button>
+
+    <button onclick="showScreen('prestigeScreen')">
+        ♻
+        <span>Престиж</span>
+    </button>
+
+    <button onclick="openModal('settingsModal')">
+        ⚙
+        <span>Настройки</span>
+    </button>
+
+</nav>
+
+
+<script src="./game.js"></script>
 
 </body>
-
 </html>
