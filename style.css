@@ -1,942 +1,1066 @@
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    background: #171a1f;
-    color: #e8eaed;
-    font-family: Arial, sans-serif;
-}
-
-button {
-    font-family: inherit;
-    cursor: pointer;
-}
-
-.game {
-    max-width: 1000px;
-    margin: auto;
-    padding-bottom: 90px;
-}
-
-
-/* HEADER */
-
-.topbar {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-
-    padding: 18px 20px;
-
-    background: #20242b;
-    border-bottom: 1px solid #353b44;
-}
-
-.logo {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: 2px;
-}
-
-.top-actions {
-    margin-left: auto;
-}
-
-.top-actions button {
-    width: 38px;
-    height: 38px;
-
-    border: 1px solid #464e59;
-    border-radius: 8px;
-
-    background: #2c323b;
-    color: white;
-
-    font-size: 18px;
-}
-
-.corporation-level {
-    padding: 8px 12px;
-
-    background: #2c323b;
-
-    border: 1px solid #464e59;
-
-    border-radius: 8px;
-
-    font-size: 11px;
-}
-
-
-/* RESOURCES */
-
-.resources {
-    display: grid;
-
-    grid-template-columns: repeat(4, 1fr);
-
-    gap: 9px;
-
-    padding: 14px 20px;
-}
-
-.resource {
-    display: flex;
-    align-items: center;
-
-    gap: 9px;
-
-    padding: 9px;
-
-    background: #22272e;
-
-    border: 1px solid #353c45;
-
-    border-radius: 9px;
-}
-
-.resource-icon {
-    width: 34px;
-    height: 34px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background: #303640;
-
-    border-radius: 7px;
-
-    font-size: 17px;
-}
-
-.resource small {
-    display: block;
-
-    color: #9299a3;
-
-    font-size: 9px;
-}
-
-.resource strong {
-    display: block;
-
-    margin-top: 2px;
-
-    font-size: 14px;
-}
-
-
-/* XP */
-
-.xp-section {
-    padding: 0 20px 14px;
-}
-
-.xp-label {
-    display: flex;
-    justify-content: space-between;
-
-    margin-bottom: 6px;
-
-    color: #9299a3;
-
-    font-size: 11px;
-}
-
-.xp-bar {
-    height: 7px;
-
-    background: #30353d;
-
-    border-radius: 10px;
-
-    overflow: hidden;
-}
-
-#xpProgress {
-    width: 0%;
-    height: 100%;
-
-    background: #8b939e;
-
-    transition: width .2s;
-}
-
-
-/* SCREENS */
-
-.screen {
-    padding: 10px 20px;
-}
-
-.hidden {
-    display: none !important;
-}
-
-.screen h1 {
-    margin: 10px 0 18px;
-
-    font-size: 25px;
-}
-
-.back-button {
-    margin-bottom: 10px;
-
-    padding: 8px 12px;
-
-    border: 1px solid #444c56;
-    border-radius: 7px;
-
-    background: #292f37;
-
-    color: white;
-}
-
-
-/* LEVEL */
-
-.level-up {
-    display: none;
-
-    margin: 0 20px 12px;
-
-    padding: 12px;
-
-    text-align: center;
-
-    background: #303640;
-
-    border: 1px solid #69727e;
-
-    border-radius: 8px;
-
-    font-weight: bold;
-}
-
-.level-up div {
-    margin-top: 5px;
-
-    color: #aab1ba;
-
-    font-size: 12px;
-}
-
-
-/* MAIN PRODUCTION */
-
-.main-production {
-    padding: 30px 20px;
-
-    text-align: center;
-
-    background: #22272e;
-
-    border: 1px solid #3c444e;
-
-    border-radius: 14px;
-}
-
-.mine-symbol {
-    font-size: 58px;
-
-    margin-bottom: 4px;
-}
-
-.main-production h2 {
-    margin: 4px;
-
-    font-size: 23px;
-}
-
-.ore-rate {
-    margin-top: 10px;
-
-    color: #aeb5bd;
-
-    font-size: 14px;
-}
-
-.ore-rate b {
-    color: white;
-}
-
-.manual-rate {
-    margin-top: 7px;
-
-    color: #858d97;
-
-    font-size: 12px;
-}
-
-.mine-button {
-    width: 100%;
-    max-width: 500px;
-
-    margin: 22px auto 12px;
-
-    padding: 19px;
-
-    border: 1px solid #69737e;
-    border-radius: 10px;
-
-    background: #3a424c;
-
-    color: white;
-
-    font-size: 18px;
-    font-weight: 800;
-
-    letter-spacing: .5px;
-}
-
-.mine-button:hover {
-    background: #46515d;
-}
-
-.mine-button:active {
-    transform: scale(.98);
-}
-
-.mine-level {
-    color: #7f8791;
-
-    font-size: 11px;
-}
-
-
-/* ACTIONS */
-
-.main-actions {
-    display: grid;
-
-    grid-template-columns: repeat(4, 1fr);
-
-    gap: 10px;
-
-    margin-top: 14px;
-}
-
-.action-card {
-    min-height: 105px;
-
-    padding: 14px;
-
-    background: #22272e;
-
-    border: 1px solid #383f48;
-
-    border-radius: 10px;
-
-    color: white;
-}
-
-.action-card:hover {
-    background: #292f37;
-}
-
-.action-card span {
-    display: block;
-
-    margin-bottom: 7px;
-
-    font-size: 25px;
-}
-
-.action-card strong {
-    display: block;
-
-    font-size: 12px;
-}
-
-.action-card small {
-    display: block;
-
-    margin-top: 5px;
-
-    color: #818995;
-
-    font-size: 9px;
-}
-
-
-/* SUMMARY */
-
-.production-summary {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 10px;
-
-    margin-top: 14px;
-}
-
-.production-summary > div {
-    padding: 13px;
-
-    background: #20252c;
-
-    border: 1px solid #353c45;
-
-    border-radius: 9px;
-}
-
-.production-summary small {
-    display: block;
-
-    margin-bottom: 5px;
-
-    color: #818995;
-
-    font-size: 9px;
-}
-
-.production-summary b {
-    font-size: 13px;
-}
-
-
-/* UPGRADES */
-
-.upgrade-card {
-    display: flex;
-
-    gap: 15px;
-
-    margin-top: 13px;
-
-    padding: 16px;
-
-    background: #22272e;
-
-    border: 1px solid #383f48;
-
-    border-radius: 11px;
-}
-
-.upgrade-icon {
-    width: 60px;
-    height: 60px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    background: #30363f;
-
-    border-radius: 8px;
-
-    font-size: 28px;
-}
-
-.upgrade-content {
-    flex: 1;
-}
-
-.upgrade-header {
-    display: flex;
-    justify-content: space-between;
-}
-
-.upgrade-header h2 {
-    margin: 0;
-
-    font-size: 17px;
-}
-
-.upgrade-header span {
-    color: #9299a3;
-
-    font-size: 11px;
-}
-
-.upgrade-content p {
-    color: #858c96;
-
-    font-size: 12px;
-}
-
-.upgrade-effect {
-    margin: 9px 0;
-
-    color: #c1c7ce;
-
-    font-size: 12px;
-}
-
-.upgrade-button {
-    width: 100%;
-
-    padding: 10px;
-
-    border: 1px solid #59616b;
-    border-radius: 7px;
-
-    background: #353c45;
-
-    color: white;
-
-    font-weight: bold;
-}
-
-.upgrade-button:hover {
-    background: #414a55;
-}
-
-button:disabled {
-    opacity: .4;
-    cursor: not-allowed;
-}
-
-
-/* MODALS */
-
-.modal {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 50;
-
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-
-    background: rgba(0, 0, 0, .65);
-}
-
-.modal-content {
-    width: 100%;
-    max-width: 700px;
-    max-height: 88vh;
-
-    overflow-y: auto;
-
-    padding: 20px;
-
-    background: #20242b;
-
-    border: 1px solid #424a54;
-
-    border-radius: 15px 15px 0 0;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-bottom: 18px;
-}
-
-.modal-header h2 {
-    margin: 0;
-
-    font-size: 21px;
-}
-
-.modal-header button {
-    width: 35px;
-    height: 35px;
-
-    border: 1px solid #454d57;
-    border-radius: 7px;
-
-    background: #2b3037;
-
-    color: white;
-
-    font-size: 22px;
-}
-
-
-/* BUILDINGS */
-
-.buildings-list {
-    display: grid;
-
-    gap: 9px;
-}
-
-.building-row {
-    display: flex;
-
-    align-items: center;
-
-    gap: 14px;
-
-    padding: 13px;
-
-    background: #292e35;
-
-    border: 1px solid #3a414a;
-
-    border-radius: 9px;
-}
-
-.building-icon {
-    width: 48px;
-    height: 48px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    background: #343a43;
-
-    border-radius: 8px;
-
-    font-size: 24px;
-}
-
-.building-row h3 {
-    margin: 0 0 4px;
-
-    font-size: 15px;
-}
-
-.building-row p {
-    margin: 0 0 5px;
-
-    color: #8c949e;
-
-    font-size: 11px;
-}
-
-.building-row small {
-    color: #6f7781;
-
-    font-size: 10px;
-}
-
-
-/* WORKERS */
-
-.worker-big {
-    padding: 20px;
-
-    text-align: center;
-
-    background: #292e35;
-
-    border: 1px solid #3a414a;
-
-    border-radius: 11px;
-}
-
-.worker-icon {
-    font-size: 48px;
-
-    margin-bottom: 8px;
-}
-
-.worker-big h2 {
-    font-size: 19px;
-}
-
-.worker-big p {
-    color: #858c96;
-
-    font-size: 12px;
-}
-
-.worker-production {
-    margin: 15px 0;
-
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.worker-stat {
-    padding: 10px;
-
-    margin-top: 7px;
-
-    background: #22272e;
-
-    border-radius: 7px;
-
-    color: #8d959f;
-
-    font-size: 12px;
-}
-
-.worker-stat b {
-    color: white;
-}
-
-.worker-big .upgrade-button {
-    margin-top: 18px;
-}
-
-
-/* SETTINGS */
-
-.settings-list {
-    display: grid;
-
-    gap: 9px;
-}
-
-.settings-list button {
-    width: 100%;
-
-    padding: 14px;
-
-    text-align: left;
-
-    background: #292e35;
+// ==========================================
+// FACTORY EMPIRE
+// ==========================================
 
-    border: 1px solid #3a414a;
 
-    border-radius: 8px;
+// ==========================================
+// РЕСУРСЫ
+// ==========================================
 
-    color: white;
-}
-
-.settings-list button:hover {
-    background: #333943;
-}
-
-.donate-preview {
-    margin-top: 18px;
-
-    padding: 15px;
-
-    background: #292e35;
-
-    border: 1px solid #3a414a;
-
-    border-radius: 9px;
-}
-
-.donate-preview h3 {
-    margin-top: 0;
-}
-
-.donate-preview div {
-    padding: 8px 0;
+let money =
+    Number(localStorage.getItem("money")) || 0;
 
-    color: #c1c7ce;
+let ore =
+    Number(localStorage.getItem("ore")) || 0;
 
-    font-size: 12px;
-}
-
-.donate-preview small {
-    display: block;
-
-    margin-top: 8px;
-
-    color: #737c87;
-}
-
+let metal =
+    Number(localStorage.getItem("metal")) || 0;
 
-/* TALENTS */
+let parts =
+    Number(localStorage.getItem("parts")) || 0;
 
-.talent-points {
-    padding: 12px;
 
-    background: #242a31;
+// ==========================================
+// УРОВЕНЬ
+// ==========================================
 
-    border: 1px solid #3b424b;
+let playerLevel =
+    Number(localStorage.getItem("playerLevel")) || 1;
 
-    border-radius: 8px;
+let xp =
+    Number(localStorage.getItem("xp")) || 0;
 
-    text-align: center;
-}
 
-.talent-tree {
-    max-width: 500px;
-
-    margin: 20px auto;
-}
+// ==========================================
+// ЗДАНИЯ
+// ==========================================
 
-.talent-card {
-    padding: 20px;
+let mineLevel =
+    Number(localStorage.getItem("mineLevel")) || 1;
 
-    text-align: center;
+let smelterLevel =
+    Number(localStorage.getItem("smelterLevel")) || 1;
 
-    background: #22272e;
+let factoryLevel =
+    Number(localStorage.getItem("factoryLevel")) || 1;
 
-    border: 1px solid #383f48;
 
-    border-radius: 12px;
-}
+// ==========================================
+// РАБОЧИЕ
+// ==========================================
 
-.talent-icon {
-    font-size: 34px;
-}
+let workers =
+    Number(localStorage.getItem("workers")) || 0;
 
-.talent-card h2 {
-    font-size: 18px;
-}
 
-.talent-card p {
-    color: #858c96;
+// ==========================================
+// ТАЛАНТЫ
+// ==========================================
 
-    font-size: 13px;
-}
+let talentPoints =
+    Number(localStorage.getItem("talentPoints")) || 0;
 
-.talent-card small {
-    display: block;
+let talentMining =
+    localStorage.getItem("talentMining") === "true";
 
-    margin-bottom: 12px;
+let talentEconomy =
+    localStorage.getItem("talentEconomy") === "true";
 
-    color: #9299a3;
-}
+let talentProduction =
+    localStorage.getItem("talentProduction") === "true";
 
-.talent-card button {
-    width: 100%;
 
-    padding: 10px;
+// ==========================================
+// ПРЕСТИЖ
+// ==========================================
 
-    background: #353c45;
+let prestigeLevel =
+    Number(localStorage.getItem("prestigeLevel")) || 0;
 
-    border: 1px solid #59616b;
 
-    border-radius: 7px;
+// ==========================================
+// СОХРАНЕНИЕ
+// ==========================================
 
-    color: white;
-}
+function saveGame() {
 
-.talent-line {
-    padding: 8px;
+    localStorage.setItem("money", money);
 
-    text-align: center;
+    localStorage.setItem("ore", ore);
 
-    color: #7e8792;
+    localStorage.setItem("metal", metal);
 
-    font-size: 25px;
-}
+    localStorage.setItem("parts", parts);
 
+    localStorage.setItem("playerLevel", playerLevel);
 
-/* PRESTIGE */
+    localStorage.setItem("xp", xp);
 
-.prestige-card {
-    max-width: 600px;
+    localStorage.setItem("mineLevel", mineLevel);
 
-    margin: 25px auto;
+    localStorage.setItem("smelterLevel", smelterLevel);
 
-    padding: 30px;
+    localStorage.setItem("factoryLevel", factoryLevel);
 
-    text-align: center;
+    localStorage.setItem("workers", workers);
 
-    background: #22272e;
+    localStorage.setItem("talentPoints", talentPoints);
 
-    border: 1px solid #454d57;
+    localStorage.setItem("talentMining", talentMining);
 
-    border-radius: 13px;
-}
+    localStorage.setItem("talentEconomy", talentEconomy);
 
-.prestige-icon {
-    font-size: 50px;
-}
+    localStorage.setItem("talentProduction", talentProduction);
 
-.prestige-card p {
-    color: #858c96;
+    localStorage.setItem("prestigeLevel", prestigeLevel);
 
-    line-height: 1.5;
 }
 
-.prestige-requirement,
-.prestige-reward {
-    margin: 10px 0;
 
-    padding: 11px;
+// ==========================================
+// ШАХТА
+// ==========================================
 
-    background: #2b3037;
+function getBaseMining() {
 
-    border-radius: 7px;
+    return mineLevel * 0.1;
 
-    font-size: 12px;
 }
-
-.prestige-card .upgrade-button {
-    margin-top: 12px;
-}
-
-
-/* NAVIGATION */
-
-.navigation {
-    position: fixed;
-
-    bottom: 0;
-    left: 50%;
 
-    transform: translateX(-50%);
 
-    width: min(1000px, 100%);
+// ==========================================
+// РАБОЧИЕ
+// ==========================================
 
-    display: grid;
+function getWorkerMining() {
 
-    grid-template-columns: repeat(4, 1fr);
+    return workers * 0.2;
 
-    background: #20242b;
-
-    border-top: 1px solid #3a414a;
-
-    z-index: 20;
-}
-
-.nav-button {
-    min-height: 62px;
-
-    border: none;
-
-    background: transparent;
-
-    color: #777f89;
 }
-
-.nav-button span {
-    display: block;
-
-    margin-bottom: 3px;
 
-    font-size: 18px;
-}
 
-.nav-button small {
-    font-size: 9px;
-}
+// ==========================================
+// БОНУСЫ ДОБЫЧИ
+// ==========================================
 
-.nav-button.active {
-    color: white;
+function getMiningMultiplier() {
 
-    background: #292f37;
-}
+    let multiplier = 1;
 
 
-/* MOBILE */
+    if (talentMining) {
 
-@media (max-width: 650px) {
+        multiplier += 0.10;
 
-    .logo {
-        font-size: 15px;
     }
 
-    .resources {
-        grid-template-columns: repeat(2, 1fr);
+
+    multiplier += prestigeLevel * 0.10;
+
+
+    return multiplier;
+
+}
+
+
+// ==========================================
+// ОБЩАЯ ДОБЫЧА РУДЫ
+// ==========================================
+
+function getOrePerSecond() {
+
+    let total =
+        getBaseMining()
+        +
+        getWorkerMining();
+
+
+    total *= getMiningMultiplier();
+
+
+    return total;
+
+}
+
+
+// ==========================================
+// РУЧНАЯ ДОБЫЧА
+// ==========================================
+
+function mine() {
+
+    ore += getBaseMining();
+
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+// ==========================================
+// НАЙМ РАБОЧЕГО
+// ==========================================
+
+function hireWorker() {
+
+    let cost =
+        25 * Math.pow(1.25, workers);
+
+
+    if (money < cost) {
+
+        alert(
+            "Недостаточно факсов."
+        );
+
+        return;
+
     }
 
-    .main-actions {
-        grid-template-columns: repeat(2, 1fr);
+
+    money -= cost;
+
+    workers++;
+
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+// ==========================================
+// АВТОМАТИЧЕСКОЕ ПРОИЗВОДСТВО
+// ==========================================
+
+function automaticProduction(delta) {
+
+    let mining =
+        getOrePerSecond();
+
+
+    ore += mining * delta;
+
+
+    // Плавильня
+
+    let smeltRate =
+        0.1 * smelterLevel;
+
+
+    let possibleSmelt =
+        Math.min(
+            ore / 2,
+            smeltRate * delta
+        );
+
+
+    ore -=
+        possibleSmelt * 2;
+
+
+    metal +=
+        possibleSmelt;
+
+
+    // Завод деталей
+
+    let factoryRate =
+        0.1 * factoryLevel;
+
+
+    let possibleParts =
+        Math.min(
+            metal / 2,
+            factoryRate * delta
+        );
+
+
+    metal -=
+        possibleParts * 2;
+
+
+    parts +=
+        possibleParts;
+
+}
+
+
+// ==========================================
+// ПРОДАЖА
+// ==========================================
+
+function sellParts() {
+
+    if (parts <= 0) {
+
+        alert(
+            "Нет деталей для продажи."
+        );
+
+        return;
+
     }
 
-    .production-summary {
-        grid-template-columns: 1fr;
+
+    let income =
+        parts * 100;
+
+
+    if (talentEconomy) {
+
+        income *= 1.10;
+
     }
 
-    .upgrade-card {
-        padding: 12px;
+
+    money += income;
+
+
+    addXP(
+        parts * 20
+    );
+
+
+    parts = 0;
+
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+// ==========================================
+// XP
+// ==========================================
+
+function addXP(amount) {
+
+    xp += amount;
+
+
+    let requiredXP =
+        playerLevel * 100;
+
+
+    while (xp >= requiredXP) {
+
+        xp -= requiredXP;
+
+        playerLevel++;
+
+        talentPoints++;
+
+
+        showLevelUp();
+
+
+        requiredXP =
+            playerLevel * 100;
+
     }
 
 }
+
+
+// ==========================================
+// УЛУЧШЕНИЕ ШАХТЫ
+// ==========================================
+
+function upgradeMine() {
+
+    let cost =
+        mineLevel * 50;
+
+
+    if (money < cost) {
+
+        alert(
+            "Недостаточно факсов."
+        );
+
+        return;
+
+    }
+
+
+    money -= cost;
+
+    mineLevel++;
+
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+// ==========================================
+// УЛУЧШЕНИЕ ПЛАВИЛЬНИ
+// ==========================================
+
+function upgradeSmelter() {
+
+    let cost =
+        smelterLevel * 100;
+
+
+    if (money < cost) {
+
+        alert(
+            "Недостаточно факсов."
+        );
+
+        return;
+
+    }
+
+
+    money -= cost;
+
+    smelterLevel++;
+
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+// ==========================================
+// УЛУЧШЕНИЕ ЗАВОДА
+// ==========================================
+
+function upgradeFactory() {
+
+    let cost =
+        factoryLevel * 200;
+
+
+    if (money < cost) {
+
+        alert(
+            "Недостаточно факсов."
+        );
+
+        return;
+
+    }
+
+
+    money -= cost;
+
+    factoryLevel++;
+
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+// ==========================================
+// ТАЛАНТЫ
+// ==========================================
+
+function buyTalent(type) {
+
+    if (type === "mining") {
+
+        if (
+            talentMining ||
+            talentPoints < 1
+        ) {
+            return;
+        }
+
+
+        talentPoints--;
+
+        talentMining = true;
+
+    }
+
+
+    if (type === "economy") {
+
+        if (
+            !talentMining ||
+            talentEconomy ||
+            talentPoints < 1
+        ) {
+            return;
+        }
+
+
+        talentPoints--;
+
+        talentEconomy = true;
+
+    }
+
+
+    if (type === "production") {
+
+        if (
+            !talentEconomy ||
+            talentProduction ||
+            talentPoints < 2
+        ) {
+            return;
+        }
+
+
+        talentPoints -= 2;
+
+        talentProduction = true;
+
+    }
+
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+// ==========================================
+// ПРЕСТИЖ
+// ==========================================
+
+function prestige() {
+
+    if (playerLevel < 100) {
+
+        alert(
+            "Престиж доступен с 100 уровня."
+        );
+
+        return;
+
+    }
+
+
+    let confirmation =
+        confirm(
+            "Начать престиж? Обычный прогресс будет сброшен."
+        );
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+    prestigeLevel++;
+
+
+    money = 0;
+
+    ore = 0;
+
+    metal = 0;
+
+    parts = 0;
+
+
+    playerLevel = 1;
+
+    xp = 0;
+
+
+    mineLevel = 1;
+
+    smelterLevel = 1;
+
+    factoryLevel = 1;
+
+
+    workers = 0;
+
+
+    saveGame();
+
+    updateUI();
+
+
+    alert(
+        "Престиж выполнен!"
+    );
+
+}
+
+
+// ==========================================
+// ОКНА
+// ==========================================
+
+function openWindow(id) {
+
+    document
+        .getElementById(id)
+        .classList.remove("hidden");
+
+}
+
+
+function closeWindow(id) {
+
+    document
+        .getElementById(id)
+        .classList.add("hidden");
+
+}
+
+
+// ==========================================
+// ЭКРАНЫ
+// ==========================================
+
+function showScreen(screen) {
+
+    document
+        .getElementById("mainScreen")
+        .classList.add("hidden");
+
+    document
+        .getElementById("upgradeScreen")
+        .classList.add("hidden");
+
+    document
+        .getElementById("talentScreen")
+        .classList.add("hidden");
+
+    document
+        .getElementById("prestigeScreen")
+        .classList.add("hidden");
+
+
+    if (screen === "main") {
+
+        document
+            .getElementById("mainScreen")
+            .classList.remove("hidden");
+
+    }
+
+
+    if (screen === "upgrades") {
+
+        document
+            .getElementById("upgradeScreen")
+            .classList.remove("hidden");
+
+    }
+
+
+    if (screen === "talents") {
+
+        document
+            .getElementById("talentScreen")
+            .classList.remove("hidden");
+
+    }
+
+
+    if (screen === "prestige") {
+
+        document
+            .getElementById("prestigeScreen")
+            .classList.remove("hidden");
+
+    }
+
+
+    updateNavigation(screen);
+
+}
+
+
+// ==========================================
+// НАВИГАЦИЯ
+// ==========================================
+
+function updateNavigation(screen) {
+
+    document
+        .getElementById("mainTab")
+        .classList.remove("active");
+
+    document
+        .getElementById("talentTab")
+        .classList.remove("active");
+
+    document
+        .getElementById("prestigeTab")
+        .classList.remove("active");
+
+
+    if (screen === "main") {
+
+        document
+            .getElementById("mainTab")
+            .classList.add("active");
+
+    }
+
+
+    if (screen === "talents") {
+
+        document
+            .getElementById("talentTab")
+            .classList.add("active");
+
+    }
+
+
+    if (screen === "prestige") {
+
+        document
+            .getElementById("prestigeTab")
+            .classList.add("active");
+
+    }
+
+}
+
+
+// ==========================================
+// УРОВЕНЬ
+// ==========================================
+
+function showLevelUp() {
+
+    let message =
+        document.getElementById(
+            "levelUpMessage"
+        );
+
+
+    message.style.display =
+        "block";
+
+
+    setTimeout(function() {
+
+        message.style.display =
+            "none";
+
+    }, 2500);
+
+}
+
+
+// ==========================================
+// НАСТРОЙКИ
+// ==========================================
+
+function showComingSoon() {
+
+    alert(
+        "Эта функция будет добавлена позже."
+    );
+
+}
+
+
+// ==========================================
+// СБРОС
+// ==========================================
+
+function resetGame() {
+
+    let confirmation =
+        confirm(
+            "Точно полностью сбросить игру?"
+        );
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+    localStorage.clear();
+
+    location.reload();
+
+}
+
+
+// ==========================================
+// ОБНОВЛЕНИЕ UI
+// ==========================================
+
+function updateUI() {
+
+    // РЕСУРСЫ
+
+    document.getElementById("money").textContent =
+        money.toFixed(1);
+
+    document.getElementById("ore").textContent =
+        ore.toFixed(1);
+
+    document.getElementById("metal").textContent =
+        metal.toFixed(1);
+
+    document.getElementById("parts").textContent =
+        parts.toFixed(1);
+
+
+    // УРОВЕНЬ
+
+    document.getElementById("playerLevel").textContent =
+        playerLevel;
+
+
+    // XP
+
+    let requiredXP =
+        playerLevel * 100;
+
+
+    document.getElementById("xp").textContent =
+        xp.toFixed(1);
+
+    document.getElementById("xpNeeded").textContent =
+        requiredXP.toFixed(1);
+
+
+    document.getElementById("xpProgress").style.width =
+        Math.min(
+            100,
+            xp / requiredXP * 100
+        ) + "%";
+
+
+    // ДОБЫЧА
+
+    let orePerSecond =
+        getOrePerSecond();
+
+
+    document.getElementById("orePerSecond").textContent =
+        orePerSecond.toFixed(1);
+
+
+    document.getElementById("summaryOre").textContent =
+        orePerSecond.toFixed(1);
+
+
+    document.getElementById("manualMining").textContent =
+        getBaseMining().toFixed(1);
+
+
+    // ШАХТА
+
+    document.getElementById("mineLevel").textContent =
+        mineLevel;
+
+
+    document.getElementById("upgradeMineLevel").textContent =
+        mineLevel;
+
+
+    document.getElementById("buildingMineLevel").textContent =
+        mineLevel;
+
+
+    document.getElementById("upgradeMinePower").textContent =
+        getBaseMining().toFixed(1);
+
+
+    document.getElementById("upgradeMineNextPower").textContent =
+        ((mineLevel + 1) * 0.1).toFixed(1);
+
+
+    document.getElementById("mineCost").textContent =
+        (mineLevel * 50).toFixed(1);
+
+
+    // ПЛАВИЛЬНЯ
+
+    document.getElementById("upgradeSmelterLevel").textContent =
+        smelterLevel;
+
+
+    document.getElementById("buildingSmelterLevel").textContent =
+        smelterLevel;
+
+
+    document.getElementById("smelterOutput").textContent =
+        (0.1 * smelterLevel).toFixed(1);
+
+
+    document.getElementById("smelterCost").textContent =
+        (smelterLevel * 100).toFixed(1);
+
+
+    // ЗАВОД
+
+    document.getElementById("upgradeFactoryLevel").textContent =
+        factoryLevel;
+
+
+    document.getElementById("buildingFactoryLevel").textContent =
+        factoryLevel;
+
+
+    document.getElementById("factoryOutput").textContent =
+        (0.1 * factoryLevel).toFixed(1);
+
+
+    document.getElementById("factoryCost").textContent =
+        (factoryLevel * 200).toFixed(1);
+
+
+    // РАБОЧИЕ
+
+    document.getElementById("workerCountMain").textContent =
+        workers;
+
+
+    document.getElementById("workerProduction").textContent =
+        getWorkerMining().toFixed(1);
+
+
+    let workerCost =
+        25 * Math.pow(1.25, workers);
+
+
+    document.getElementById("workerCost").textContent =
+        workerCost.toFixed(1);
+
+
+    // ТАЛАНТЫ
+
+    document.getElementById("talentPoints").textContent =
+        talentPoints;
+
+
+    let miningButton =
+        document.getElementById("talentMining");
+
+
+    let economyButton =
+        document.getElementById("talentEconomy");
+
+
+    let productionButton =
+        document.getElementById("talentProduction");
+
+
+    miningButton.disabled =
+        talentMining ||
+        talentPoints < 1;
+
+
+    miningButton.textContent =
+        talentMining
+            ? "ИЗУЧЕНО"
+            : "ИЗУЧИТЬ";
+
+
+    economyButton.disabled =
+        !talentMining ||
+        talentEconomy ||
+        talentPoints < 1;
+
+
+    economyButton.textContent =
+        talentEconomy
+            ? "ИЗУЧЕНО"
+            : "ИЗУЧИТЬ";
+
+
+    productionButton.disabled =
+        !talentEconomy ||
+        talentProduction ||
+        talentPoints < 2;
+
+
+    productionButton.textContent =
+        talentProduction
+            ? "ИЗУЧЕНО"
+            : "ИЗУЧИТЬ";
+
+
+    // ПРЕСТИЖ
+
+    document.getElementById("prestigeButton").disabled =
+        playerLevel < 100;
+
+}
+
+
+// ==========================================
+// ИГРОВОЙ ЦИКЛ
+// ==========================================
+
+let lastTime =
+    Date.now();
+
+
+function gameLoop() {
+
+    let now =
+        Date.now();
+
+
+    let delta =
+        (now - lastTime) / 1000;
+
+
+    lastTime = now;
+
+
+    if (delta > 1) {
+
+        delta = 1;
+
+    }
+
+
+    automaticProduction(delta);
+
+
+    updateUI();
+
+}
+
+
+setInterval(
+    gameLoop,
+    100
+);
+
+
+// ==========================================
+// АВТОСОХРАНЕНИЕ
+// ==========================================
+
+setInterval(
+    saveGame,
+    5000
+);
+
+
+// ==========================================
+// ЗАПУСК
+// ==========================================
+
+updateUI();
