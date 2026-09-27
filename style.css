@@ -1,0 +1,525 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #171a1f;
+    color: #e8eaed;
+    font-family: Arial, sans-serif;
+}
+
+button {
+    font-family: inherit;
+}
+
+.game {
+    max-width: 1000px;
+    margin: auto;
+    padding-bottom: 100px;
+}
+
+
+/* =========================
+   ВЕРХ
+========================= */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 22px 20px;
+
+    background: #20242b;
+    border-bottom: 1px solid #353b44;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.corporation-level {
+    padding: 8px 14px;
+
+    background: #2c323b;
+    border: 1px solid #464e59;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   РЕСУРСЫ
+========================= */
+
+.resources {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 10px;
+
+    padding: 15px 20px;
+}
+
+.resource {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    background: #22272e;
+
+    border: 1px solid #353c45;
+
+    border-radius: 9px;
+
+    padding: 10px;
+}
+
+.resource-icon {
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    background: #303640;
+
+    font-size: 18px;
+}
+
+.resource small {
+    display: block;
+
+    color: #9299a3;
+
+    font-size: 11px;
+}
+
+.resource strong {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 16px;
+}
+
+
+/* =========================
+   XP
+========================= */
+
+.xp-section {
+    padding: 0 20px 15px;
+}
+
+.xp-label {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 6px;
+
+    color: #9299a3;
+
+    font-size: 12px;
+}
+
+.xp-bar {
+    height: 7px;
+
+    overflow: hidden;
+
+    background: #30353d;
+
+    border-radius: 10px;
+}
+
+#xpProgress {
+    width: 0%;
+    height: 100%;
+
+    background: #8a929d;
+
+    transition: width 0.2s;
+}
+
+
+/* =========================
+   ЭКРАН
+========================= */
+
+.screen {
+    padding: 10px 20px;
+}
+
+.screen.hidden {
+    display: none;
+}
+
+.screen h1 {
+    margin: 10px 0 5px;
+
+    font-size: 27px;
+}
+
+.screen-description {
+    color: #858c96;
+
+    margin-top: 0;
+}
+
+
+/* =========================
+   УВЕДОМЛЕНИЕ
+========================= */
+
+.level-up {
+    display: none;
+
+    margin: 10px 20px;
+
+    padding: 12px;
+
+    text-align: center;
+
+    background: #303640;
+
+    border: 1px solid #69727e;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   ЗДАНИЯ
+========================= */
+
+.production-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 14px;
+
+    margin-top: 18px;
+}
+
+.building {
+    display: flex;
+
+    min-height: 190px;
+
+    background: #22272e;
+
+    border: 1px solid #383f48;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+.large-building {
+    grid-column: span 2;
+}
+
+
+.building-image {
+    width: 110px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: #292f37;
+
+    color: #b9c0c8;
+
+    font-size: 52px;
+}
+
+.mine-image {
+    background: #30302d;
+}
+
+.smelter-image {
+    background: #302e2b;
+}
+
+.factory-image {
+    background: #2c3032;
+}
+
+.sale-image {
+    background: #292e33;
+}
+
+
+.building-info {
+    padding: 18px;
+
+    flex: 1;
+}
+
+.building-title {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+}
+
+.building-title h2 {
+    margin: 0;
+
+    font-size: 19px;
+}
+
+.building-title span {
+    color: #9299a3;
+
+    font-size: 12px;
+}
+
+.building-info p {
+    color: #858c96;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+
+.production-value {
+    margin: 12px 0;
+
+    font-size: 14px;
+}
+
+.recipe {
+    margin: 12px 0;
+
+    color: #aab1ba;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   КНОПКИ
+========================= */
+
+.main-button,
+.upgrade-button {
+    width: 100%;
+
+    padding: 11px;
+
+    border: 1px solid #59616b;
+
+    border-radius: 7px;
+
+    background: #353c45;
+
+    color: #fff;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.main-button:hover,
+.upgrade-button:hover {
+    background: #414a55;
+}
+
+.main-button:active,
+.upgrade-button:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================
+   УЛУЧШЕНИЯ
+========================= */
+
+.upgrade-card {
+    display: flex;
+
+    gap: 16px;
+
+    margin-top: 14px;
+
+    padding: 18px;
+
+    background: #22272e;
+
+    border: 1px solid #383f48;
+
+    border-radius: 12px;
+}
+
+.upgrade-icon {
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: #30363f;
+
+    border-radius: 9px;
+
+    font-size: 34px;
+}
+
+.upgrade-content {
+    flex: 1;
+}
+
+.upgrade-header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+}
+
+.upgrade-header h2 {
+    margin: 0;
+
+    font-size: 18px;
+}
+
+.upgrade-header span {
+    color: #9299a3;
+
+    font-size: 12px;
+}
+
+.upgrade-content p {
+    color: #858c96;
+
+    font-size: 13px;
+}
+
+.upgrade-effect {
+    margin: 10px 0;
+
+    color: #bfc5cc;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   НИЖНЯЯ ПАНЕЛЬ
+========================= */
+
+.navigation {
+    position: fixed;
+
+    bottom: 0;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: min(1000px, 100%);
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    background: #20242b;
+
+    border-top: 1px solid #3a414a;
+
+    z-index: 10;
+}
+
+.nav-button {
+    min-height: 65px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #777f89;
+
+    cursor: pointer;
+}
+
+.nav-button span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 20px;
+}
+
+.nav-button small {
+    font-size: 10px;
+}
+
+.nav-button.active {
+    color: #e8eaed;
+
+    background: #292f37;
+}
+
+.nav-button.locked {
+    opacity: 0.4;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================
+   ТЕЛЕФОН
+========================= */
+
+@media (max-width: 650px) {
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .resources {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .production-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .large-building {
+        grid-column: span 1;
+    }
+
+    .building {
+        min-height: 170px;
+    }
+
+    .building-image {
+        width: 85px;
+
+        font-size: 40px;
+    }
+
+    .upgrade-card {
+        padding: 14px;
+    }
+
+}
