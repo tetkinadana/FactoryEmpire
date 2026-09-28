@@ -1,1184 +1,1089 @@
-// ==========================================
+// ===============================
 // FACTORY EMPIRE
-// ОСНОВНАЯ ИГРОВАЯ СИСТЕМА
-// ==========================================
+// Основной игровой код
+// ===============================
 
 
-// ==========================================
-// ДАННЫЕ
-// ==========================================
+// ===============================
+// СОСТОЯНИЕ ИГРЫ
+// ===============================
 
-let money =
-    Number(localStorage.getItem("money")) || 0;
+let game = {
+    money: 0,
 
-let ore =
-    Number(localStorage.getItem("ore")) || 0;
+    ore: 0,
+    metal: 0,
+    parts: 0,
 
-let metal =
-    Number(localStorage.getItem("metal")) || 0;
+    playerLevel: 1,
+    xp: 0,
 
-let parts =
-    Number(localStorage.getItem("parts")) || 0;
+    mineLevel: 1,
+    smelterLevel: 1,
+    factoryLevel: 1,
 
+    workers: 0,
 
-let playerLevel =
-    Number(localStorage.getItem("playerLevel")) || 1;
+    talentPoints: 0,
 
-let xp =
-    Number(localStorage.getItem("xp")) || 0;
+    talentMining: false,
+    talentEconomy: false,
+    talentProduction: false,
 
-
-let talentPoints =
-    Number(localStorage.getItem("talentPoints")) || 0;
-
-
-let mineLevel =
-    Number(localStorage.getItem("mineLevel")) || 1;
-
-let smelterLevel =
-    Number(localStorage.getItem("smelterLevel")) || 1;
-
-let factoryLevel =
-    Number(localStorage.getItem("factoryLevel")) || 1;
+    prestigeLevel: 0
+};
 
 
-let workers =
-    Number(localStorage.getItem("workers")) || 0;
+// ===============================
+// ЗАГРУЗКА ИГРЫ
+// ===============================
+
+function loadGame() {
+
+    const saved = localStorage.getItem("factoryEmpireSave");
+
+    if (!saved) {
+        updateUI();
+        return;
+    }
+
+    try {
+
+        const data = JSON.parse(saved);
+
+        game = {
+            ...game,
+            ...data
+        };
+
+    } catch (error) {
+
+        console.log("Ошибка загрузки сохранения");
+
+    }
+
+    updateUI();
+}
 
 
-let prestigeLevel =
-    Number(localStorage.getItem("prestigeLevel")) || 0;
-
-
-// ==========================================
-// ТАЛАНТЫ
-// ==========================================
-
-let talentMining =
-    localStorage.getItem("talentMining") === "true";
-
-let talentEconomy =
-    localStorage.getItem("talentEconomy") === "true";
-
-let talentProduction =
-    localStorage.getItem("talentProduction") === "true";
-
-
-// ==========================================
+// ===============================
 // СОХРАНЕНИЕ
-// ==========================================
+// ===============================
 
 function saveGame() {
 
-    localStorage.setItem("money", money);
-
-    localStorage.setItem("ore", ore);
-
-    localStorage.setItem("metal", metal);
-
-    localStorage.setItem("parts", parts);
-
-
     localStorage.setItem(
-        "playerLevel",
-        playerLevel
+        "factoryEmpireSave",
+        JSON.stringify(game)
     );
 
-    localStorage.setItem(
-        "xp",
-        xp
-    );
-
-
-    localStorage.setItem(
-        "talentPoints",
-        talentPoints
-    );
-
-
-    localStorage.setItem(
-        "mineLevel",
-        mineLevel
-    );
-
-    localStorage.setItem(
-        "smelterLevel",
-        smelterLevel
-    );
-
-    localStorage.setItem(
-        "factoryLevel",
-        factoryLevel
-    );
-
-
-    localStorage.setItem(
-        "workers",
-        workers
-    );
-
-
-    localStorage.setItem(
-        "prestigeLevel",
-        prestigeLevel
-    );
-
-
-    localStorage.setItem(
-        "talentMining",
-        talentMining
-    );
-
-    localStorage.setItem(
-        "talentEconomy",
-        talentEconomy
-    );
-
-    localStorage.setItem(
-        "talentProduction",
-        talentProduction
-    );
-
+    showMessage("Игра сохранена");
 }
 
 
-// ==========================================
-// БАЗОВАЯ ДОБЫЧА
-// ==========================================
+// ===============================
+// СБРОС
+// ===============================
 
-function getBaseMining() {
+function resetGame() {
 
-    return mineLevel * 0.1;
+    const confirmed = confirm(
+        "Точно сбросить весь прогресс?"
+    );
 
+    if (!confirmed) return;
+
+    localStorage.removeItem("factoryEmpireSave");
+
+    location.reload();
 }
 
 
-// ==========================================
-// ДОБЫЧА РАБОЧИХ
-// ==========================================
+// ===============================
+// ДОБЫЧА РУДЫ
+// ===============================
 
-function getWorkerMining() {
+function getMiningPower() {
 
-    return workers * 0.2;
+    let power = game.mineLevel * 0.1;
 
-}
-
-
-// ==========================================
-// ТАЛАНТ ДОБЫЧИ
-// ==========================================
-
-function getMiningMultiplier() {
-
-    let multiplier = 1;
+    power += game.workers * 0.2;
 
 
-    if (talentMining) {
+    // Талант добычи
 
-        multiplier += 0.10;
+    if (game.talentMining) {
+        power *= 1.1;
+    }
+
+
+    // Престиж
+
+    if (game.prestigeLevel > 0) {
+
+        power *= (
+            1 +
+            game.prestigeLevel * 0.1
+        );
 
     }
 
 
-    // бонус престижа
-
-    multiplier += prestigeLevel * 0.10;
-
-
-    return multiplier;
-
+    return power;
 }
 
-
-// ==========================================
-// ОБЩАЯ ДОБЫЧА
-// ==========================================
-
-function getOrePerSecond() {
-
-    let total =
-        getBaseMining()
-        +
-        getWorkerMining();
-
-
-    total *= getMiningMultiplier();
-
-
-    return total;
-
-}
-
-
-// ==========================================
-// РУЧНАЯ ДОБЫЧА
-// ==========================================
 
 function mine() {
 
-    ore += getBaseMining();
+    const amount = getMiningPower();
 
-    saveGame();
+    game.ore += amount;
+
+    addXP(1);
 
     updateUI();
-
 }
 
 
-// ==========================================
-// НАЙМ РАБОЧЕГО
-// ==========================================
+// ===============================
+// АВТОМАТИЧЕСКАЯ ДОБЫЧА
+// ===============================
 
-function hireWorker() {
+function automaticMining(delta) {
 
-    let cost =
-        25 * Math.pow(1.25, workers);
+    const amountPerSecond =
+        getMiningPower();
+
+    game.ore +=
+        amountPerSecond * delta;
+}
 
 
-    cost = Math.round(cost * 10) / 10;
+// ===============================
+// ПРОИЗВОДСТВО
+// ===============================
 
+function automaticProduction(delta) {
 
-    if (money < cost) {
+    // ---------------------------
+    // ПЛАВИЛЬНЯ
+    // ---------------------------
 
-        alert(
-            "Недостаточно факсов."
+    let smeltingSpeed =
+        game.smelterLevel * 0.1;
+
+    if (game.talentProduction) {
+        smeltingSpeed *= 1.1;
+    }
+
+    const possibleMetal =
+        smeltingSpeed * delta;
+
+    const maxMetalByOre =
+        game.ore / 2;
+
+    const metalProduced =
+        Math.min(
+            possibleMetal,
+            maxMetalByOre
         );
 
-        return;
+    if (metalProduced > 0) {
+
+        game.ore -=
+            metalProduced * 2;
+
+        game.metal +=
+            metalProduced;
 
     }
 
 
-    money -= cost;
+    // ---------------------------
+    // ЗАВОД ДЕТАЛЕЙ
+    // ---------------------------
 
-    workers++;
+    let factorySpeed =
+        game.factoryLevel * 0.1;
 
+    if (game.talentProduction) {
+        factorySpeed *= 1.1;
+    }
 
-    saveGame();
+    const possibleParts =
+        factorySpeed * delta;
 
-    updateUI();
+    const maxPartsByMetal =
+        game.metal / 2;
 
-}
-
-
-// ==========================================
-// ПЛАВИЛЬНЯ
-// ==========================================
-
-function smelt() {
-
-    let requiredOre = 2.0;
-
-
-    if (ore < requiredOre) {
-
-        alert(
-            "Недостаточно руды."
+    const partsProduced =
+        Math.min(
+            possibleParts,
+            maxPartsByMetal
         );
 
-        return;
+    if (partsProduced > 0) {
+
+        game.metal -=
+            partsProduced * 2;
+
+        game.parts +=
+            partsProduced;
 
     }
-
-
-    ore -= requiredOre;
-
-
-    let output =
-        1.0 + (smelterLevel - 1) * 0.1;
-
-
-    metal += output;
-
-
-    saveGame();
-
-    updateUI();
-
 }
 
 
-// ==========================================
-// ЗАВОД
-// ==========================================
-
-function produceParts() {
-
-    let requiredMetal = 2.0;
-
-
-    if (metal < requiredMetal) {
-
-        alert(
-            "Недостаточно металла."
-        );
-
-        return;
-
-    }
-
-
-    metal -= requiredMetal;
-
-
-    let output =
-        1.0 + (factoryLevel - 1) * 0.1;
-
-
-    if (talentProduction) {
-
-        output *= 1.10;
-
-    }
-
-
-    parts += output;
-
-
-    saveGame();
-
-    updateUI();
-
-}
-
-
-// ==========================================
-// ПРОДАЖА
-// ==========================================
+// ===============================
+// ПРОДАЖА ДЕТАЛЕЙ
+// ===============================
 
 function sellParts() {
 
-    if (parts <= 0) {
+    if (game.parts <= 0) {
 
-        alert(
-            "Нет деталей для продажи."
+        showMessage(
+            "Нет деталей для продажи"
         );
 
         return;
-
     }
 
 
-    let income =
-        parts * 100;
+    let price = 100;
 
 
-    if (talentEconomy) {
+    // Талант экономики
 
-        income *= 1.10;
-
+    if (game.talentEconomy) {
+        price *= 1.1;
     }
 
 
-    money += income;
+    const income =
+        game.parts * price;
 
+
+    const soldParts =
+        game.parts;
+
+
+    game.money += income;
+
+    game.parts = 0;
+
+
+    // XP за продажу
 
     addXP(
-        parts * 20
+        soldParts * 20
     );
 
 
-    parts = 0;
-
-
-    saveGame();
+    showMessage(
+        `Продано деталей: ${formatNumber(soldParts)}`
+    );
 
     updateUI();
-
 }
 
 
-// ==========================================
-// XP
-// ==========================================
+// ===============================
+// ОПЫТ И УРОВЕНЬ
+// ===============================
+
+function getXPNeeded() {
+
+    return game.playerLevel * 100;
+}
+
 
 function addXP(amount) {
 
-    xp += amount;
+    game.xp += amount;
 
 
-    let requiredXP =
-        playerLevel * 100;
+    while (
+        game.xp >= getXPNeeded()
+    ) {
 
+        game.xp -=
+            getXPNeeded();
 
-    while (xp >= requiredXP) {
+        game.playerLevel++;
 
-        xp -= requiredXP;
+        game.talentPoints++;
 
-        playerLevel++;
-
-
-        talentPoints++;
-
-
-        showLevelUp();
-
-
-        requiredXP =
-            playerLevel * 100;
-
+        showLevelUpMessage();
     }
 
+
+    updateUI();
 }
 
 
-// ==========================================
+function showLevelUpMessage() {
+
+    const message =
+        document.getElementById(
+            "levelMessage"
+        );
+
+    if (!message) return;
+
+
+    message.textContent =
+        `🎉 Новый уровень! Уровень ${game.playerLevel}. +1 очко талантов`;
+
+    setTimeout(() => {
+
+        message.textContent = "";
+
+    }, 4000);
+}
+
+
+// ===============================
 // УЛУЧШЕНИЕ ШАХТЫ
-// ==========================================
+// ===============================
 
 function upgradeMine() {
 
-    let cost =
-        mineLevel * 50;
+    const cost =
+        game.mineLevel * 50;
 
 
-    if (money < cost) {
+    if (game.money < cost) {
 
-        alert(
-            "Недостаточно факсов."
+        showMessage(
+            `Недостаточно денег. Нужно ${formatNumber(cost)} 💰`
         );
 
         return;
-
     }
 
 
-    money -= cost;
+    game.money -= cost;
 
-    mineLevel++;
+    game.mineLevel++;
 
 
-    saveGame();
+    showMessage(
+        `Шахта улучшена до уровня ${game.mineLevel}!`
+    );
+
 
     updateUI();
-
 }
 
 
-// ==========================================
+// ===============================
 // УЛУЧШЕНИЕ ПЛАВИЛЬНИ
-// ==========================================
+// ===============================
 
 function upgradeSmelter() {
 
-    let cost =
-        smelterLevel * 100;
+    const cost =
+        game.smelterLevel * 100;
 
 
-    if (money < cost) {
+    if (game.money < cost) {
 
-        alert(
-            "Недостаточно факсов."
+        showMessage(
+            `Недостаточно денег. Нужно ${formatNumber(cost)} 💰`
         );
 
         return;
-
     }
 
 
-    money -= cost;
+    game.money -= cost;
 
-    smelterLevel++;
+    game.smelterLevel++;
 
 
-    saveGame();
+    showMessage(
+        `Плавильня улучшена до уровня ${game.smelterLevel}!`
+    );
+
 
     updateUI();
-
 }
 
 
-// ==========================================
+// ===============================
 // УЛУЧШЕНИЕ ЗАВОДА
-// ==========================================
+// ===============================
 
 function upgradeFactory() {
 
-    let cost =
-        factoryLevel * 200;
+    const cost =
+        game.factoryLevel * 200;
 
 
-    if (money < cost) {
+    if (game.money < cost) {
 
-        alert(
-            "Недостаточно факсов."
+        showMessage(
+            `Недостаточно денег. Нужно ${formatNumber(cost)} 💰`
         );
 
         return;
-
     }
 
 
-    money -= cost;
+    game.money -= cost;
 
-    factoryLevel++;
+    game.factoryLevel++;
 
 
-    saveGame();
+    showMessage(
+        `Завод улучшен до уровня ${game.factoryLevel}!`
+    );
+
 
     updateUI();
-
 }
 
 
-// ==========================================
+// ===============================
+// РАБОЧИЕ
+// ===============================
+
+function hireWorker() {
+
+    const cost = 100;
+
+
+    if (game.money < cost) {
+
+        showMessage(
+            "Недостаточно денег для найма рабочего"
+        );
+
+        return;
+    }
+
+
+    game.money -= cost;
+
+    game.workers++;
+
+
+    showMessage(
+        `Рабочий нанят! Всего рабочих: ${game.workers}`
+    );
+
+
+    updateUI();
+}
+
+
+// ===============================
 // ТАЛАНТЫ
-// ==========================================
+// ===============================
 
 function buyTalent(type) {
 
-
-    // ДОБЫЧА
-
     if (type === "mining") {
 
-        if (talentMining) {
+        if (game.talentMining) {
 
-            return;
-
-        }
-
-
-        if (talentPoints < 1) {
-
-            alert(
-                "Недостаточно кредитов талантов."
+            showMessage(
+                "Этот талант уже изучен"
             );
 
             return;
-
         }
 
 
-        talentPoints--;
+        if (game.talentPoints < 1) {
 
-        talentMining = true;
-
-    }
-
-
-    // ЭКОНОМИКА
-
-    if (type === "economy") {
-
-        if (!talentMining) {
-
-            return;
-
-        }
-
-
-        if (talentEconomy) {
-
-            return;
-
-        }
-
-
-        if (talentPoints < 1) {
-
-            alert(
-                "Недостаточно кредитов талантов."
+            showMessage(
+                "Недостаточно очков талантов"
             );
 
             return;
-
         }
 
 
-        talentPoints--;
+        game.talentPoints--;
 
-        talentEconomy = true;
+        game.talentMining = true;
 
+
+        showMessage(
+            "Талант «Эффективная добыча» изучен!"
+        );
     }
 
 
-    // ПРОИЗВОДСТВО
+    else if (type === "economy") {
 
-    if (type === "production") {
+        if (game.talentEconomy) {
 
-        if (!talentEconomy) {
-
-            return;
-
-        }
-
-
-        if (talentPoints < 2) {
-
-            alert(
-                "Нужно 2 кредита талантов."
+            showMessage(
+                "Этот талант уже изучен"
             );
 
             return;
-
         }
 
 
-        if (talentProduction) {
+        if (!game.talentMining) {
+
+            showMessage(
+                "Сначала изучите «Эффективную добычу»"
+            );
 
             return;
-
         }
 
 
-        talentPoints -= 2;
+        if (game.talentPoints < 1) {
 
-        talentProduction = true;
+            showMessage(
+                "Недостаточно очков талантов"
+            );
 
+            return;
+        }
+
+
+        game.talentPoints--;
+
+        game.talentEconomy = true;
+
+
+        showMessage(
+            "Талант «Экономика» изучен!"
+        );
     }
 
 
-    saveGame();
+    else if (type === "production") {
+
+        if (game.talentProduction) {
+
+            showMessage(
+                "Этот талант уже изучен"
+            );
+
+            return;
+        }
+
+
+        if (!game.talentEconomy) {
+
+            showMessage(
+                "Сначала изучите «Экономику»"
+            );
+
+            return;
+        }
+
+
+        if (game.talentPoints < 2) {
+
+            showMessage(
+                "Нужно 2 очка талантов"
+            );
+
+            return;
+        }
+
+
+        game.talentPoints -= 2;
+
+        game.talentProduction = true;
+
+
+        showMessage(
+            "Талант «Производство» изучен!"
+        );
+    }
+
 
     updateUI();
-
 }
 
 
-// ==========================================
+// ===============================
 // ПРЕСТИЖ
-// ==========================================
+// ===============================
 
 function prestige() {
 
-    if (playerLevel < 10) {
+    if (game.playerLevel < 100) {
 
-        alert(
-            "Для престижа нужен 10 уровень."
+        showMessage(
+            "Престиж доступен только с 100 уровня"
         );
 
         return;
-
     }
 
 
-    let confirmation =
-        confirm(
-            "Начать престиж? Обычный прогресс будет сброшен."
-        );
+    const confirmed = confirm(
+        "Престиж сбросит текущий прогресс. Продолжить?"
+    );
 
 
-    if (!confirmation) {
-
-        return;
-
-    }
+    if (!confirmed) return;
 
 
-    prestigeLevel++;
+    game.prestigeLevel++;
 
 
-    money = 0;
+    game.money = 0;
 
-    ore = 0;
+    game.ore = 0;
 
-    metal = 0;
+    game.metal = 0;
 
-    parts = 0;
+    game.parts = 0;
 
+    game.playerLevel = 1;
 
-    playerLevel = 1;
+    game.xp = 0;
 
-    xp = 0;
+    game.mineLevel = 1;
 
+    game.smelterLevel = 1;
 
-    mineLevel = 1;
+    game.factoryLevel = 1;
 
-    smelterLevel = 1;
-
-    factoryLevel = 1;
-
-
-    workers = 0;
+    game.workers = 0;
 
 
-    saveGame();
+    showMessage(
+        `Престиж ${game.prestigeLevel} получен!`
+    );
+
 
     updateUI();
 
+    saveGame();
+}
 
-    alert(
-        "Престиж выполнен! Постоянный бонус: +" +
-        (prestigeLevel * 10) +
-        "% к добыче."
+
+// ===============================
+// МОДАЛЬНЫЕ ОКНА
+// ===============================
+
+function openModal(id) {
+
+    const modal =
+        document.getElementById(id);
+
+    if (!modal) return;
+
+    modal.style.display = "block";
+}
+
+
+function closeModal(id) {
+
+    const modal =
+        document.getElementById(id);
+
+    if (!modal) return;
+
+    modal.style.display = "none";
+}
+
+
+// ===============================
+// ЭКРАНЫ
+// ===============================
+
+function showScreen(id) {
+
+    const screens =
+        document.querySelectorAll(".screen");
+
+
+    screens.forEach(screen => {
+
+        screen.classList.add("hidden");
+
+    });
+
+
+    const target =
+        document.getElementById(id);
+
+
+    if (target) {
+
+        target.classList.remove("hidden");
+
+    }
+}
+
+
+// ===============================
+// СООБЩЕНИЯ
+// ===============================
+
+function showMessage(text) {
+
+    const message =
+        document.getElementById(
+            "levelMessage"
+        );
+
+
+    if (!message) return;
+
+
+    message.textContent = text;
+
+
+    clearTimeout(
+        window.messageTimeout
     );
 
+
+    window.messageTimeout =
+        setTimeout(() => {
+
+            message.textContent = "";
+
+        }, 3000);
 }
 
 
-// ==========================================
-// ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
-// ==========================================
+// ===============================
+// ФОРМАТ ЧИСЕЛ
+// ===============================
 
-function showScreen(screen) {
+function formatNumber(number) {
 
-    let screens = [
-        "production",
-        "upgrades",
-        "talents",
-        "prestige"
-    ];
+    if (!Number.isFinite(number)) {
+        return "0";
+    }
 
 
-    screens.forEach(function(name) {
+    if (number < 10) {
 
-        let element =
-            document.getElementById(
-                name === "production"
-                    ? "productionScreen"
-                    : name === "upgrades"
-                    ? "upgradeScreen"
-                    : name === "talents"
-                    ? "talentScreen"
-                    : "prestigeScreen"
-            );
-
-
-        element.classList.add("hidden");
-
-    });
-
-
-    let selected;
-
-
-    if (screen === "production") {
-
-        selected =
-            document.getElementById(
-                "productionScreen"
-            );
+        return number.toFixed(1);
 
     }
 
 
-    if (screen === "upgrades") {
+    if (number < 1000) {
 
-        selected =
-            document.getElementById(
-                "upgradeScreen"
-            );
+        return Math.floor(number).toString();
 
     }
 
 
-    if (screen === "talents") {
-
-        selected =
-            document.getElementById(
-                "talentScreen"
-            );
-
-    }
-
-
-    if (screen === "prestige") {
-
-        selected =
-            document.getElementById(
-                "prestigeScreen"
-            );
-
-    }
-
-
-    selected.classList.remove("hidden");
-
-
-    let tabs = [
-        "productionTab",
-        "upgradeTab",
-        "talentTab",
-        "prestigeTab"
-    ];
-
-
-    tabs.forEach(function(tab) {
-
-        document
-            .getElementById(tab)
-            .classList.remove("active");
-
-    });
-
-
-    if (screen === "production") {
-
-        document
-            .getElementById("productionTab")
-            .classList.add("active");
-
-    }
-
-
-    if (screen === "upgrades") {
-
-        document
-            .getElementById("upgradeTab")
-            .classList.add("active");
-
-    }
-
-
-    if (screen === "talents") {
-
-        document
-            .getElementById("talentTab")
-            .classList.add("active");
-
-    }
-
-
-    if (screen === "prestige") {
-
-        document
-            .getElementById("prestigeTab")
-            .classList.add("active");
-
-    }
-
+    return Math.floor(number)
+        .toLocaleString("ru-RU");
 }
 
 
-// ==========================================
+// ===============================
 // ОБНОВЛЕНИЕ ИНТЕРФЕЙСА
-// ==========================================
+// ===============================
 
 function updateUI() {
 
-
+    // ---------------------------
     // РЕСУРСЫ
+    // ---------------------------
 
-    document.getElementById("money").textContent =
-        money.toFixed(1);
+    setText(
+        "money",
+        formatNumber(game.money)
+    );
+
+    setText(
+        "ore",
+        formatNumber(game.ore)
+    );
+
+    setText(
+        "metal",
+        formatNumber(game.metal)
+    );
+
+    setText(
+        "parts",
+        formatNumber(game.parts)
+    );
 
 
-    document.getElementById("ore").textContent =
-        ore.toFixed(1);
-
-
-    document.getElementById("metal").textContent =
-        metal.toFixed(1);
-
-
-    document.getElementById("parts").textContent =
-        parts.toFixed(1);
-
-
+    // ---------------------------
     // УРОВЕНЬ
+    // ---------------------------
 
-    document.getElementById("playerLevel").textContent =
-        playerLevel;
+    setText(
+        "playerLevel",
+        game.playerLevel
+    );
 
 
+    // ---------------------------
     // XP
+    // ---------------------------
 
-    let requiredXP =
-        playerLevel * 100;
-
-
-    document.getElementById("xp").textContent =
-        xp.toFixed(1);
+    const xpNeeded =
+        getXPNeeded();
 
 
-    document.getElementById("xpNeeded").textContent =
-        requiredXP.toFixed(1);
+    setText(
+        "xp",
+        formatNumber(game.xp)
+    );
+
+    setText(
+        "xpNeeded",
+        formatNumber(xpNeeded)
+    );
 
 
-    let xpProgress =
+    const xpPercent =
         Math.min(
             100,
-            (xp / requiredXP) * 100
+            (game.xp / xpNeeded) * 100
         );
 
 
-    document.getElementById(
-        "xpProgress"
-    ).style.width =
-        xpProgress + "%";
+    const xpFill =
+        document.getElementById(
+            "xpFill"
+        );
 
 
+    if (xpFill) {
+
+        xpFill.style.width =
+            xpPercent + "%";
+
+    }
+
+
+    // ---------------------------
     // ДОБЫЧА
+    // ---------------------------
 
-    let orePerSecond =
-        getOrePerSecond();
-
-
-    document.getElementById(
-        "orePerSecond"
-    ).textContent =
-        orePerSecond.toFixed(1);
+    const miningPower =
+        getMiningPower();
 
 
-    document.getElementById(
-        "mineProduction"
-    ).textContent =
-        orePerSecond.toFixed(1);
+    setText(
+        "autoMining",
+        miningPower.toFixed(1)
+    );
 
 
-    // РАБОЧИЕ
-
-    document.getElementById(
-        "workerCount"
-    ).textContent =
-        workers;
+    setText(
+        "manualMining",
+        "+" + miningPower.toFixed(1)
+    );
 
 
-    document.getElementById(
-        "workerCountMain"
-    ).textContent =
-        workers;
+    // ---------------------------
+    // УРОВЕНЬ ШАХТЫ
+    // ---------------------------
+
+    setText(
+        "mineLevel",
+        game.mineLevel
+    );
 
 
-    let workerCost =
-        25 * Math.pow(
-            1.25,
-            workers
-        );
-
-
-    document.getElementById(
-        "workerCost"
-    ).textContent =
-        workerCost.toFixed(1);
-
-
+    // ---------------------------
     // УЛУЧШЕНИЯ
+    // ---------------------------
 
-    document.getElementById(
-        "mineLevel"
-    ).textContent =
-        mineLevel;
+    setText(
+        "upgradeMineLevel",
+        game.mineLevel
+    );
 
-
-    document.getElementById(
-        "smelterLevel"
-    ).textContent =
-        smelterLevel;
-
-
-    document.getElementById(
-        "factoryLevel"
-    ).textContent =
-        factoryLevel;
+    setText(
+        "mineUpgradeCost",
+        game.mineLevel * 50
+    );
 
 
-    document.getElementById(
-        "upgradeMineLevel"
-    ).textContent =
-        mineLevel;
+    setText(
+        "upgradeSmelterLevel",
+        game.smelterLevel
+    );
+
+    setText(
+        "smelterUpgradeCost",
+        game.smelterLevel * 100
+    );
 
 
-    document.getElementById(
-        "upgradeMinePower"
-    ).textContent =
-        getBaseMining().toFixed(1);
+    setText(
+        "upgradeFactoryLevel",
+        game.factoryLevel
+    );
+
+    setText(
+        "factoryUpgradeCost",
+        game.factoryLevel * 200
+    );
 
 
-    document.getElementById(
-        "upgradeMineNextPower"
-    ).textContent =
-        ((mineLevel + 1) * 0.1).toFixed(1);
+    // ---------------------------
+    // РАБОЧИЕ
+    // ---------------------------
+
+    setText(
+        "workersCount",
+        game.workers
+    );
 
 
-    document.getElementById(
-        "mineCost"
-    ).textContent =
-        (mineLevel * 50).toFixed(1);
+    setText(
+        "workerProduction",
+        (game.workers * 0.2).toFixed(1)
+    );
 
 
-    document.getElementById(
-        "upgradeSmelterLevel"
-    ).textContent =
-        smelterLevel;
+    // ---------------------------
+    // СВОДКА
+    // ---------------------------
+
+    setText(
+        "summaryOre",
+        formatNumber(game.ore)
+    );
+
+    setText(
+        "summaryMetal",
+        formatNumber(game.metal)
+    );
+
+    setText(
+        "summaryParts",
+        formatNumber(game.parts)
+    );
+
+    setText(
+        "summaryWorkers",
+        game.workers
+    );
 
 
-    document.getElementById(
-        "smelterOutput"
-    ).textContent =
-        (
-            1 +
-            (smelterLevel - 1) * 0.1
-        ).toFixed(1);
-
-
-    document.getElementById(
-        "smelterCost"
-    ).textContent =
-        (smelterLevel * 100).toFixed(1);
-
-
-    document.getElementById(
-        "upgradeFactoryLevel"
-    ).textContent =
-        factoryLevel;
-
-
-    document.getElementById(
-        "factoryOutput"
-    ).textContent =
-        (
-            1 +
-            (factoryLevel - 1) * 0.1
-        ).toFixed(1);
-
-
-    document.getElementById(
-        "factoryCost"
-    ).textContent =
-        (factoryLevel * 200).toFixed(1);
-
-
+    // ---------------------------
     // ТАЛАНТЫ
+    // ---------------------------
 
-    document.getElementById(
-        "talentPoints"
-    ).textContent =
-        talentPoints;
-
-
-    let miningButton =
-        document.getElementById(
-            "talentMining"
-        );
-
-
-    let economyButton =
-        document.getElementById(
-            "talentEconomy"
-        );
-
-
-    let productionButton =
-        document.getElementById(
-            "talentProduction"
-        );
-
-
-    if (talentMining) {
-
-        miningButton.textContent =
-            "ИЗУЧЕНО";
-
-        miningButton.disabled = true;
-
-    }
-    else {
-
-        miningButton.textContent =
-            "ИЗУЧИТЬ";
-
-        miningButton.disabled =
-            talentPoints < 1;
-
-    }
-
-
-    if (talentEconomy) {
-
-        economyButton.textContent =
-            "ИЗУЧЕНО";
-
-        economyButton.disabled = true;
-
-    }
-    else {
-
-        economyButton.textContent =
-            "ИЗУЧИТЬ";
-
-        economyButton.disabled =
-            !talentMining ||
-            talentPoints < 1;
-
-    }
-
-
-    if (talentProduction) {
-
-        productionButton.textContent =
-            "ИЗУЧЕНО";
-
-        productionButton.disabled = true;
-
-    }
-    else {
-
-        productionButton.textContent =
-            "ИЗУЧИТЬ";
-
-        productionButton.disabled =
-            !talentEconomy ||
-            talentPoints < 2;
-
-    }
-
-
-    // ПРЕСТИЖ
-
-    document.getElementById(
-        "prestigeButton"
-    ).disabled =
-        playerLevel < 10;
-
+    setText(
+        "talentPoints",
+        game.talentPoints
+    );
 }
 
 
-// ==========================================
-// АВТОМАТИЧЕСКАЯ ДОБЫЧА
-// ==========================================
+// ===============================
+// БЕЗОПАСНОЕ ИЗМЕНЕНИЕ ТЕКСТА
+// ===============================
 
-let lastTime =
-    Date.now();
+function setText(id, value) {
 
-
-function gameLoop() {
-
-    let now =
-        Date.now();
+    const element =
+        document.getElementById(id);
 
 
-    let delta =
-        (now - lastTime) / 1000;
+    if (element) {
 
-
-    lastTime = now;
-
-
-    // защита от огромного скачка времени
-
-    if (delta > 1) {
-
-        delta = 1;
+        element.textContent = value;
 
     }
+}
 
 
-    let production =
-        getOrePerSecond();
+// ===============================
+// ИГРОВОЙ ЦИКЛ
+// ===============================
+
+let lastTime =
+    performance.now();
 
 
-    ore +=
-        production * delta;
+function gameLoop(currentTime) {
+
+    const delta =
+        (currentTime - lastTime) / 1000;
+
+
+    lastTime = currentTime;
+
+
+    // Защита от огромного скачка времени
+
+    const safeDelta =
+        Math.min(delta, 1);
+
+
+    automaticMining(
+        safeDelta
+    );
+
+
+    automaticProduction(
+        safeDelta
+    );
 
 
     updateUI();
 
 
-    saveGame();
-
+    requestAnimationFrame(
+        gameLoop
+    );
 }
 
 
-setInterval(
-    gameLoop,
-    100
+// ===============================
+// ЗАПУСК
+// ===============================
+
+loadGame();
+
+requestAnimationFrame(
+    gameLoop
 );
 
 
-// ==========================================
-// ЗАПУСК
-// ==========================================
+// ===============================
+// АВТОСОХРАНЕНИЕ
+// ===============================
 
-updateUI();
+setInterval(() => {
+
+    saveGame();
+
+}, 5000);
+
+
+// ===============================
+// ЗАКРЫТИЕ МОДАЛЬНОГО ОКНА
+// ПРИ НАЖАТИИ ВНЕ ЕГО
+// ===============================
+
+window.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target.classList.contains(
+                "modal"
+            )
+        ) {
+
+            event.target.style.display =
+                "none";
+
+        }
+
+    }
+);
