@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,10 @@
 <body>
 
 <header class="topbar">
-    <div class="logo">FACTORY EMPIRE</div>
+
+    <div class="logo">
+        FACTORY EMPIRE
+    </div>
 
     <button class="settings-button" onclick="openModal('settingsModal')">
         ⚙
@@ -21,8 +25,11 @@
     <div class="level">
         УРОВЕНЬ <span id="playerLevel">1</span>
     </div>
+
 </header>
 
+
+<!-- РЕСУРСЫ -->
 
 <section class="resources">
 
@@ -49,17 +56,23 @@
 </section>
 
 
+<!-- XP -->
+
 <section class="xp-section">
 
     <div class="xp-text">
+
         XP:
         <span id="xp">0</span>
         /
         <span id="xpNeeded">100</span>
+
     </div>
 
     <div class="xp-bar">
+
         <div id="xpFill"></div>
+
     </div>
 
 </section>
@@ -68,442 +81,173 @@
 <div id="levelMessage" class="level-message"></div>
 
 
+<!-- ГЛАВНЫЙ ЭКРАН -->
+
 <main id="mainScreen">
 
     <section class="mine-panel">
 
-        <div class="mine-icon">⛏</div>
+        <div class="mine-icon">
+            ⛏
+        </div>
 
-        <h1>ШАХТА</h1>
+        <h1>
+            ШАХТА
+        </h1>
 
         <div class="automatic">
+
             Автоматически:
             <b id="autoMining">0.1</b>
             руды / сек
+
         </div>
 
         <div class="manual">
+
             Ручная добыча:
             <b id="manualMining">+0.1</b>
             руды
+
         </div>
 
         <button class="mine-button" onclick="mine()">
+
             ⛏ ДОБЫТЬ РУДУ
+
         </button>
 
         <div class="mine-level">
+
             Уровень шахты:
             <b id="mineLevel">1</b>
+
         </div>
 
     </section>
 
+
+    <!-- КНОПКИ -->
 
     <section class="action-grid">
 
         <button class="action-card" onclick="sellParts()">
+
             <span>⇢</span>
-            <b>СБЫТ</b>
-            <small>Продать детали</small>
+
+            <b>
+                СБЫТ
+            </b>
+
+            <small>
+                Продать детали
+            </small>
+
         </button>
+
 
         <button class="action-card" onclick="openModal('buildingsModal')">
+
             <span>▦</span>
-            <b>ЗДАНИЯ</b>
-            <small>Производство</small>
+
+            <b>
+                ЗДАНИЯ
+            </b>
+
+            <small>
+                Производство
+            </small>
+
         </button>
+
 
         <button class="action-card" onclick="openModal('workersModal')">
+
             <span>👷</span>
-            <b>РАБОЧИЕ</b>
-            <small>Персонал</small>
+
+            <b>
+                РАБОЧИЕ
+            </b>
+
+            <small>
+                Персонал
+            </small>
+
         </button>
+
 
         <button class="action-card" onclick="openModal('upgradeModal')">
-            <span>⚙</span>
-            <b>УЛУЧШЕНИЯ</b>
-            <small>Развитие</small>
-        </button>
 
+            <span>⚙</span>
+
+            <b>
+                УЛУЧШЕНИЯ
+            </b>
+
+            <small>
+                Развитие
+            </small>
+
+        </button>
 
     </section>
 
+
+    <!-- КРАТКАЯ ИНФОРМАЦИЯ -->
 
     <section class="summary-grid">
 
         <div class="summary-card">
-            <span>Руда</span>
-            <b id="summaryOre">0</b>
+
+            <span>
+                Руда
+            </span>
+
+            <b id="summaryOre">
+                0
+            </b>
+
         </div>
 
-        <div class="summary-card">
-            <span>Металл</span>
-            <b id="summaryMetal">0</b>
-        </div>
 
         <div class="summary-card">
-            <span>Детали</span>
-            <b id="summaryParts">0</b>
+
+            <span>
+                Металл
+            </span>
+
+            <b id="summaryMetal">
+                0
+            </b>
+
         </div>
 
+
         <div class="summary-card">
-            <span>Рабочие</span>
-            <b id="summaryWorkers">0</b>
+
+            <span>
+                Детали
+            </span>
+
+            <b id="summaryParts">
+                0
+            </b>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                Рабочие
+            </span>
+
+            <b id="summaryWorkers">
+                0
+            </b>
+
         </div>
 
     </section>
 
-</main>
-
-
-<section id="upgradeScreen" class="screen hidden">
-
-    <h2>УЛУЧШЕНИЯ</h2>
-
-    <div class="upgrade-card">
-
-        <div>
-            <h3>⛏ Шахта</h3>
-
-            <p>
-                Уровень:
-                <b id="upgradeMineLevel">1</b>
-            </p>
-
-            <p>
-                Стоимость:
-                <b id="mineUpgradeCost">50</b> 💰
-            </p>
-        </div>
-
-        <button onclick="upgradeMine()">
-            УЛУЧШИТЬ
-        </button>
-
-    </div>
-
-
-    <div class="upgrade-card">
-
-        <div>
-            <h3>🔥 Плавильня</h3>
-
-            <p>
-                Уровень:
-                <b id="upgradeSmelterLevel">1</b>
-            </p>
-
-            <p>
-                Стоимость:
-                <b id="smelterUpgradeCost">100</b> 💰
-            </p>
-        </div>
-
-        <button onclick="upgradeSmelter()">
-            УЛУЧШИТЬ
-        </button>
-
-    </div>
-
-
-    <div class="upgrade-card">
-
-        <div>
-            <h3>🏭 Завод</h3>
-
-            <p>
-                Уровень:
-                <b id="upgradeFactoryLevel">1</b>
-            </p>
-
-            <p>
-                Стоимость:
-                <b id="factoryUpgradeCost">200</b> 💰
-            </p>
-        </div>
-
-        <button onclick="upgradeFactory()">
-            УЛУЧШИТЬ
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- ЗДАНИЯ -->
-
-<div id="buildingsModal" class="modal">
-
-    <div class="modal-content">
-
-        <button class="close" onclick="closeModal('buildingsModal')">
-            ×
-        </button>
-
-        <h2>ЗДАНИЯ</h2>
-
-        <div class="building-card">
-            <span>⛏</span>
-            <div>
-                <b>Шахта</b>
-                <small>Добывает руду автоматически</small>
-            </div>
-        </div>
-
-        <div class="building-card">
-            <span>🪨</span>
-            <div>
-                <b>Карьер</b>
-                <small>Дополнительная добыча</small>
-            </div>
-        </div>
-
-        <div class="building-card">
-            <span>🔥</span>
-            <div>
-                <b>Плавильня</b>
-                <small>Перерабатывает руду в металл</small>
-            </div>
-        </div>
-
-        <div class="building-card">
-            <span>🏭</span>
-            <div>
-                <b>Сталелитейный цех</b>
-                <small>Производит металл</small>
-            </div>
-        </div>
-
-        <div class="building-card">
-            <span>⚙</span>
-            <div>
-                <b>Завод деталей</b>
-                <small>Производит детали</small>
-            </div>
-        </div>
-
-        <div class="building-card locked">
-            <span>🏗</span>
-            <div>
-                <b>Сборочный цех</b>
-                <small>Пока заблокирован</small>
-            </div>
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- РАБОЧИЕ -->
-
-<div id="workersModal" class="modal">
-
-    <div class="modal-content">
-
-        <button class="close" onclick="closeModal('workersModal')">
-            ×
-        </button>
-
-        <h2>РАБОЧИЕ</h2>
-
-        <div class="worker-info">
-
-            <h3>👷 Рабочие шахты</h3>
-
-            <p>
-                Производство одного рабочего:
-                <b>+0.2 руды / сек</b>
-            </p>
-
-            <p>
-                Нанято:
-                <b id="workersCount">0</b>
-            </p>
-
-            <p>
-                Всего от рабочих:
-                <b id="workerProduction">0</b>
-                руды / сек
-            </p>
-
-            <button onclick="hireWorker()">
-                НАНЯТЬ РАБОЧЕГО — 100 💰
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- НАСТРОЙКИ -->
-
-<div id="settingsModal" class="modal">
-
-    <div class="modal-content">
-
-        <button class="close" onclick="closeModal('settingsModal')">
-            ×
-        </button>
-
-        <h2>НАСТРОЙКИ</h2>
-
-        <button onclick="saveGame()">
-            💾 СОХРАНИТЬ ИГРУ
-        </button>
-
-        <div class="future-card">
-
-            <h3>💳 Донатные пакеты</h3>
-
-            <p>Скоро появятся</p>
-
-        </div>
-
-        <div class="future-card">
-
-            <h3>⚡ Ускорители</h3>
-
-            <p>Скоро появятся</p>
-
-        </div>
-
-        <div class="future-card">
-
-            <h3>🔊 Звук</h3>
-
-            <p>Настройки звука появятся позже</p>
-
-        </div>
-
-        <div class="boost-preview">
-
-            <b>Будущие ускорители:</b>
-
-            <p>×2 добыча — 30 минут</p>
-            <p>×3 добыча — 1 час</p>
-            <p>×5 добыча — 2 часа</p>
-
-        </div>
-
-        <button onclick="resetGame()" class="danger">
-            🗑 СБРОСИТЬ ПРОГРЕСС
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- ТАЛАНТЫ -->
-
-<section id="talentScreen" class="screen hidden">
-
-    <h2>ТАЛАНТЫ</h2>
-
-    <div class="talent-points">
-        Очки талантов:
-        <b id="talentPoints">0</b>
-    </div>
-
-    <div class="talent-card">
-
-        <h3>⛏ Эффективная добыча</h3>
-
-        <p>+10% к добыче руды</p>
-
-        <button onclick="buyTalent('mining')">
-            ИЗУЧИТЬ — 1
-        </button>
-
-    </div>
-
-    <div class="talent-card">
-
-        <h3>💰 Экономика</h3>
-
-        <p>+10% к доходу от продажи</p>
-
-        <button onclick="buyTalent('economy')">
-            ИЗУЧИТЬ — 1
-        </button>
-
-    </div>
-
-    <div class="talent-card">
-
-        <h3>🏭 Производство</h3>
-
-        <p>+10% к производству</p>
-
-        <button onclick="buyTalent('production')">
-            ИЗУЧИТЬ — 2
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- ПРЕСТИЖ -->
-
-<section id="prestigeScreen" class="screen hidden">
-
-    <h2>ПРЕСТИЖ</h2>
-
-    <div class="prestige-card">
-
-        <h3>Новый этап корпорации</h3>
-
-        <p>
-            Престиж доступен только с
-            <b>100 уровня</b>.
-        </p>
-
-        <p>
-            Каждый престиж даёт:
-            <b>+10% к добыче</b>
-        </p>
-
-        <button onclick="prestige()">
-            ПОЛУЧИТЬ ПРЕСТИЖ
-        </button>
-
-    </div>
-
-</section>
-
-
-<nav class="bottom-nav">
-
-    <button onclick="showScreen('mainScreen')">
-        🏠
-        <span>Главная</span>
-    </button>
-
-    <button onclick="showScreen('talentScreen')">
-        🌟
-        <span>Таланты</span>
-    </button>
-
-    <button onclick="showScreen('prestigeScreen')">
-        ♻
-        <span>Престиж</span>
-    </button>
-
-    <button onclick="openModal('settingsModal')">
-        ⚙
-        <span>Настройки</span>
-    </button>
-
-</nav>
-
-
-<script src="./game.js"></script>
-
-</body>
-</html>
+</
